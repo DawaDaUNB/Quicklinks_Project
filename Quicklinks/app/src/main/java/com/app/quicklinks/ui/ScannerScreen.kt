@@ -23,6 +23,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import androidx.camera.core.ImageProxy
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.app.quicklinks.QuicklinksApp
@@ -42,8 +43,8 @@ fun ScannerScreen() {
     val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    var scannedCode by remember { mutableStateOf<String?>(null) }
-    var lastScanTime by remember { mutableStateOf<Long?>(null) }
+    var scannedCode by rememberSaveable { mutableStateOf<String?>(null) }
+    var lastScanTime by rememberSaveable { mutableStateOf<Long?>(null) }
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("QR Scanner") }) }

@@ -4,6 +4,7 @@ import androidx.core.net.toUri
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
@@ -22,10 +23,10 @@ import java.net.URLEncoder
 fun ShortenerScreen(navController: NavController) {
     // Use the new Clipboard API
     val clipboardManager = LocalClipboardManager.current
-    var urlText by remember { mutableStateOf(TextFieldValue("")) }
-    var shortenedUrl by remember { mutableStateOf<String?>(null) }
-    var isLoading by remember { mutableStateOf(false) }
-    val client = remember { OkHttpClient() }
+    var urlText by rememberSaveable { mutableStateOf(TextFieldValue("")) }
+    var shortenedUrl by rememberSaveable { mutableStateOf<String?>(null) }
+    var isLoading by rememberSaveable { mutableStateOf(false) }
+    val client = rememberSaveable { OkHttpClient() }
     val scope = rememberCoroutineScope()
 
     Scaffold(

@@ -32,14 +32,7 @@ fun HomeScreen(navController: NavController) {
                 onClick = { navController.navigate(NavRoutes.Shortener.route) },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Shorten URL")
-            }
-
-            Button(
-                onClick = { navController.navigate(NavRoutes.History.route) },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("View History")
+                Text("Type in URL")
             }
 
             Button(
@@ -47,6 +40,13 @@ fun HomeScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Generate QR Code")
+            }
+
+            Button(
+                onClick = { navController.navigate(NavRoutes.History.route) },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("View History")
             }
         }
     }

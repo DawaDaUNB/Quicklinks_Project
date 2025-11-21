@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
@@ -27,12 +28,12 @@ import com.app.quicklinks.utils.saveQrToGallery
 fun QrGeneratorScreen() {
     val context = LocalContext.current
 
-    var text by remember { mutableStateOf("") }
-    var foregroundColor by remember { mutableStateOf(Color.BLACK) }
-    var backgroundColor by remember { mutableStateOf(Color.WHITE) }
-    var borderSize by remember { mutableStateOf(2f) }
-    var borderColor by remember { mutableStateOf(Color.BLACK) }
-    var qrBitmap by remember { mutableStateOf<Bitmap?>(null) }
+    var text by rememberSaveable { mutableStateOf("") }
+    var foregroundColor by rememberSaveable { mutableStateOf(Color.BLACK) }
+    var backgroundColor by rememberSaveable { mutableStateOf(Color.WHITE) }
+    var borderSize by rememberSaveable { mutableStateOf(2f) }
+    var borderColor by rememberSaveable { mutableStateOf(Color.BLACK) }
+    var qrBitmap by rememberSaveable { mutableStateOf<Bitmap?>(null) }
 
     // auto-update preview
     LaunchedEffect(text, foregroundColor, backgroundColor, borderSize, borderColor) {
