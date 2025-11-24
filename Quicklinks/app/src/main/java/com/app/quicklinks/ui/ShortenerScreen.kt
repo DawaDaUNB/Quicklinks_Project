@@ -23,10 +23,10 @@ import java.net.URLEncoder
 fun ShortenerScreen(navController: NavController) {
     // Use the new Clipboard API
     val clipboardManager = LocalClipboardManager.current
-    var urlText by rememberSaveable { mutableStateOf(TextFieldValue("")) }
+    var urlText by remember{ mutableStateOf(TextFieldValue("")) }
     var shortenedUrl by rememberSaveable { mutableStateOf<String?>(null) }
-    var isLoading by rememberSaveable { mutableStateOf(false) }
-    val client = rememberSaveable { OkHttpClient() }
+    var isLoading by remember { mutableStateOf(false) }
+    val client = remember { OkHttpClient() }
     val scope = rememberCoroutineScope()
 
     Scaffold(
@@ -70,12 +70,19 @@ fun ShortenerScreen(navController: NavController) {
                 Text(short, color = MaterialTheme.colorScheme.primary)
 
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    // Copy to clipboard with new API
                     Button(onClick = {
-                        // Copy to clipboard with new API
                         clipboardManager.setText(AnnotatedString(short))
                     }) {
                         Text("Copy")
                     }
+                    // TODO: Save link to history
+                    Button(onClick = {
+                        clipboardManager.setText(AnnotatedString(short))
+                    }) {
+                        Text("Save")
+                    }
+                    //Open link to check accuracy
                     Button(onClick = {
                         navController.context.startActivity(
                             android.content.Intent(android.content.Intent.ACTION_VIEW, short.toUri())

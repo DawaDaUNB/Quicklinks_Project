@@ -31,7 +31,7 @@ fun QrGeneratorScreen() {
     var text by rememberSaveable { mutableStateOf("") }
     var foregroundColor by rememberSaveable { mutableStateOf(Color.BLACK) }
     var backgroundColor by rememberSaveable { mutableStateOf(Color.WHITE) }
-    var borderSize by rememberSaveable { mutableStateOf(2f) }
+    var borderSize by rememberSaveable { mutableStateOf(0f) }
     var borderColor by rememberSaveable { mutableStateOf(Color.BLACK) }
     var qrBitmap by rememberSaveable { mutableStateOf<Bitmap?>(null) }
 
@@ -51,7 +51,36 @@ fun QrGeneratorScreen() {
     }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("QR Generator") }) }
+        topBar = {
+            TopAppBar(
+                title = {
+                    Box(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            "QR Generator",
+                            modifier = Modifier.align(Alignment.CenterStart)
+                        )
+
+                        qrBitmap?.let { bm ->
+                            Image(
+                                bitmap = bm.asImageBitmap(),
+                                contentDescription = "QR Preview",
+                                modifier = Modifier
+                                    .size(48.dp)
+                                    .align(Alignment.Center)
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .size(48.dp)                     // same size as QR
+                                .align(Alignment.CenterEnd)      // symmetrical padding
+                        )
+                    }
+                }
+            )
+        }
     ) { padding ->
         val scrollState = rememberScrollState()
 
@@ -70,7 +99,7 @@ fun QrGeneratorScreen() {
                 label = { Text("Enter text or URL") },
                 modifier = Modifier.fillMaxWidth()
             )
-
+            Spacer(Modifier.height(2.dp))
             Text("Foreground Color (RGB)")
             Spacer(Modifier.height(8.dp))
 
@@ -147,7 +176,15 @@ fun QrGeneratorScreen() {
                 valueRange = 0f..255f
             )
 
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(36.dp))
+
+            // Border slider
+            Text("Border Size: ${borderSize.toInt()}")
+            Slider(
+                value = borderSize,
+                onValueChange = { borderSize = it },
+                valueRange = 0f..20f
+            )
 
             Text("Border Color (RGB)")
             Spacer(Modifier.height(8.dp))
@@ -188,15 +225,6 @@ fun QrGeneratorScreen() {
 
             Spacer(Modifier.height(20.dp))
 
-            Spacer(Modifier.height(16.dp))
-
-            // Border slider
-            Text("Border Size: ${borderSize.toInt()}")
-            Slider(
-                value = borderSize,
-                onValueChange = { borderSize = it },
-                valueRange = 0f..20f
-            )
 
             Spacer(Modifier.height(20.dp))
 
