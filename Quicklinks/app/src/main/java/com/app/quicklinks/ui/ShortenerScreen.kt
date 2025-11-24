@@ -23,7 +23,7 @@ import java.net.URLEncoder
 fun ShortenerScreen(navController: NavController) {
     // Use the new Clipboard API
     val clipboardManager = LocalClipboardManager.current
-    var urlText by remember{ mutableStateOf(TextFieldValue("")) }
+    var urlText by remember{ mutableStateOf("") }
     var shortenedUrl by rememberSaveable { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(false) }
     val client = remember { OkHttpClient() }
@@ -49,11 +49,11 @@ fun ShortenerScreen(navController: NavController) {
 
             Button(
                 onClick = {
-                    if (urlText.text.isNotBlank()) {
+                    if (urlText.isNotBlank()) {
                         isLoading = true
                         shortenedUrl = null
                         scope.launch {
-                            val result = shortenUrl(client, urlText.text)
+                            val result = shortenUrl(client, urlText)
                             shortenedUrl = result
                             isLoading = false
                         }

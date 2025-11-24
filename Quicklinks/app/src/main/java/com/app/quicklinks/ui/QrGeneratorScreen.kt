@@ -61,6 +61,7 @@ fun QrGeneratorScreen() {
                             "QR Generator",
                             modifier = Modifier.align(Alignment.CenterStart)
                         )
+                        Spacer(Modifier.height(12.dp))
 
                         qrBitmap?.let { bm ->
                             Image(
