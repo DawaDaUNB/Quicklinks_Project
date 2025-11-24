@@ -21,9 +21,9 @@ class ScanViewModel(private val repo: ScanRepository) : ViewModel() {
         }
     }
 
-    fun saveScan(value: String) {
+    fun saveScan(value: String, oUrl: String, sUrl: String) {
         viewModelScope.launch {
-            repo.saveScan(value)
+            repo.saveScan(value, oUrl, sUrl)
             loadHistory()
         }
     }

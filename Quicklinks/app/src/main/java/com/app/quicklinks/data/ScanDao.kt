@@ -13,6 +13,9 @@ interface ScanDao {
     @Query("SELECT * FROM scans ORDER BY id DESC")
     suspend fun getAllScans(): List<Scan>
 
+    @Query("SELECT * FROM scans ORDER BY text DESC")
+    suspend fun getAllScansAlphabetical(): List<Scan>
+
     @Delete
     suspend fun deleteScan(scan: Scan)
 }

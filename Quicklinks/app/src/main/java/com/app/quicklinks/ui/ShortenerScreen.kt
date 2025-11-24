@@ -1,16 +1,25 @@
 package com.app.quicklinks.ui
 
+import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentPaste
+import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.app.quicklinks.QuicklinksApp
+import com.app.quicklinks.viewmodel.ScanViewModel
+import com.app.quicklinks.viewmodel.ScanViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -29,6 +38,11 @@ fun ShortenerScreen(navController: NavController) {
     val client = remember { OkHttpClient() }
     val scope = rememberCoroutineScope()
 
+    val app = LocalContext.current.applicationContext as QuicklinksApp
+    val viewModel: ScanViewModel = viewModel(
+        factory = ScanViewModelFactory(app.repository)
+    )
+
     Scaffold(
         topBar = { TopAppBar(title = { Text("URL Shortener") }) }
     ) { padding ->
@@ -46,6 +60,21 @@ fun ShortenerScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
+
+            Button(
+                onClick = {
+                    urlText = clipboardManager.getText().toString()
+                },
+                modifier = Modifier.fillMaxWidth(),
+                enabled = !isLoading
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ContentPaste,
+                    contentDescription = "Edit URL",
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+
 
             Button(
                 onClick = {
@@ -78,7 +107,7 @@ fun ShortenerScreen(navController: NavController) {
                     }
                     // TODO: Save link to history
                     Button(onClick = {
-                        clipboardManager.setText(AnnotatedString(short))
+                        shortenedUrl?.let { viewModel.saveScan(urlText,urlText,it) }
                     }) {
                         Text("Save")
                     }

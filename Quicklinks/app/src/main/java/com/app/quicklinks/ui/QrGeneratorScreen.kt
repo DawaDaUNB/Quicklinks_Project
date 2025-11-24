@@ -100,7 +100,7 @@ fun QrGeneratorScreen() {
                 label = { Text("Enter text or URL") },
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(Modifier.height(2.dp))
+            Spacer(Modifier.height(10.dp))
             Text("Foreground Color (RGB)")
             Spacer(Modifier.height(8.dp))
 

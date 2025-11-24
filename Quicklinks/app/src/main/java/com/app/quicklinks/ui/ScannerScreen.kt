@@ -80,7 +80,7 @@ fun ScannerScreen() {
                                     }
                                     scannedCode = value
                                     lastScanTime = now
-                                    viewModel.saveScan(value)
+                                    viewModel.saveScan(value,value,value)
                                     Toast.makeText(ctx, "Code Scanned", Toast.LENGTH_SHORT).show()
                                     Log.d("QRScanner", "Detected: $value")
                                 }

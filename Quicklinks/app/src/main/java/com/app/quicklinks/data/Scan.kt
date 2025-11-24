@@ -1,5 +1,6 @@
 package com.app.quicklinks.data
 
+import android.graphics.Bitmap
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -7,5 +8,8 @@ import androidx.room.PrimaryKey
 data class Scan(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val text: String,
+    val originalUrl: String,
+    val shortcode: String,
+    val qrCode: ByteArray? = null,
     val timestamp: Long
 )
