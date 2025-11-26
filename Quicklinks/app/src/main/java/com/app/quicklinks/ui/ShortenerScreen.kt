@@ -5,10 +5,13 @@ import androidx.core.net.toUri
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentPaste
+import androidx.compose.material.icons.filled.CopyAll
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
@@ -53,26 +56,26 @@ fun ShortenerScreen(navController: NavController) {
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            OutlinedTextField(
-                value = urlText,
-                onValueChange = { urlText = it },
-                label = { Text("Enter URL") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true
-            )
-
-            Button(
-                onClick = {
-                    urlText = clipboardManager.getText().toString()
-                },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = !isLoading
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 2.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(
-                    imageVector = Icons.Default.ContentPaste,
-                    contentDescription = "Edit URL",
-                    modifier = Modifier.size(18.dp)
+                OutlinedTextField(
+                    value = urlText,
+                    onValueChange = { urlText = it },
+                    label = { Text("Enter URL") },
+                    singleLine = true
                 )
+
+                IconButton(onClick = {
+                    urlText = clipboardManager.getText().toString()
+                }, enabled = !isLoading) {
+                    Icon(Icons.Filled.ContentPaste, contentDescription = "Copy paste URL")
+                }
+
             }
 
 
@@ -95,7 +98,7 @@ fun ShortenerScreen(navController: NavController) {
             }
 
             shortenedUrl?.let { short ->
-                Text("Shortened URL:", style = MaterialTheme.typography.titleMedium)
+                Text("Shortened URL:", style = MaterialTheme.typography.titleLarge)
                 Text(short, color = MaterialTheme.colorScheme.primary)
 
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -103,6 +106,7 @@ fun ShortenerScreen(navController: NavController) {
                     Button(onClick = {
                         clipboardManager.setText(AnnotatedString(short))
                     }) {
+
                         Text("Copy")
                     }
                     // TODO: Save link to history

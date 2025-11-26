@@ -17,6 +17,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.app.quicklinks.viewmodel.ScanViewModelFactory
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckBox
+import androidx.compose.material.icons.filled.CheckBoxOutlineBlank
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalClipboardManager
@@ -56,6 +58,12 @@ fun HistoryScreen(navController: NavController) {
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
+                        IconButton(onClick = {
+
+                        }) {
+                            Icon(Icons.Filled.CheckBoxOutlineBlank, contentDescription = "Copy scan")
+                        }
+
                         Text(
                             scan.text,
                             modifier = Modifier.weight(1f)
