@@ -10,8 +10,8 @@ import kotlinx.coroutines.launch
 
 class ScanViewModel(private val repo: ScanRepository) : ViewModel() {
 
-    private val _history = MutableStateFlow<List<com.app.quicklinks.data.Scan>>(emptyList())
-    val history: StateFlow<List<com.app.quicklinks.data.Scan>> = _history
+    private val _history = MutableStateFlow<List<Scan>>(emptyList())
+    val history: StateFlow<List<Scan>> = _history
 
     fun loadHistory() {
         viewModelScope.launch {
