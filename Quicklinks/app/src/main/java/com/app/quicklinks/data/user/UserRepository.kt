@@ -1,10 +1,15 @@
 package com.app.quicklinks.data.user
 
+import com.app.quicklinks.data.Scan
+
 class UserRepository(private val dao: UserDao) {
 
     suspend fun createUser(email: String, password: String) {
-        val user = UserEntity(email, password)
-        dao.insertUser(user)
+        dao.insertUser(UserEntity(
+            username = email,
+            email = email,
+            password = password
+        ))
     }
 
     suspend fun loginUser(email: String, password: String): Boolean {
@@ -26,4 +31,30 @@ class UserRepository(private val dao: UserDao) {
         }
     }
 
+    suspend fun updateEmail(userId: Long, newEmail: String): Boolean {
+        val user = dao.getUserById(userId)
+        if (user != null) {
+            dao.updateEmail(newEmail, userId)
+            return true
+        }
+        return false
+    }
+
+    suspend fun updatePassword(userId: Long, newPassword: String): Boolean {
+        val user = dao.getUserById(userId)
+        if (user != null) {
+            dao.updatePassword(newPassword, userId)
+            return true
+        }
+        return false
+    }
+
+    suspend fun updateUsername(userId: Long, newUsername: String): Boolean {
+        val user = dao.getUserById(userId)
+        if (user != null) {
+            dao.updateUsername(newUsername, userId)
+            return true
+        }
+        return false
+    }
 }

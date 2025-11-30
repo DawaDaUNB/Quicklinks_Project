@@ -7,11 +7,18 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckBox
+import androidx.compose.material.icons.filled.CheckBoxOutlineBlank
+import androidx.compose.material.icons.filled.ContentPaste
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalClipboard
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -27,12 +34,12 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 fun QrGeneratorScreen(navController: NavController) {
     val context = LocalContext.current
 
-    var text by remember { mutableStateOf("") }
-    var foregroundColor by remember { mutableStateOf(Color.BLACK) }
-    var backgroundColor by remember { mutableStateOf(Color.WHITE) }
-    var borderSize by remember { mutableStateOf(2f) }
-    var borderColor by remember { mutableStateOf(Color.BLACK) }
-    var qrBitmap by remember { mutableStateOf<Bitmap?>(null) }
+    var text by rememberSaveable { mutableStateOf("") }
+    var foregroundColor by rememberSaveable { mutableStateOf(Color.BLACK) }
+    var backgroundColor by rememberSaveable { mutableStateOf(Color.WHITE) }
+    var borderSize by rememberSaveable { mutableStateOf(0f) }
+    var borderColor by rememberSaveable { mutableStateOf(Color.BLACK) }
+    var qrBitmap by rememberSaveable { mutableStateOf<Bitmap?>(null) }
 
     LaunchedEffect(text, foregroundColor, backgroundColor, borderSize, borderColor) {
         if (text.isNotBlank()) {
@@ -82,19 +89,36 @@ fun QrGeneratorScreen(navController: NavController) {
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ){
+
+
             OutlinedTextField(
                 value = text,
                 onValueChange = { text = it },
                 label = { Text("Enter text or URL") },
                 modifier = Modifier.fillMaxWidth()
             )
+//                val clipboardManager = LocalClipboard.current
+//
+//                IconButton(onClick = {
+//                    text = clipboardManager.toString()
+//                }) {
+//                    Icon(Icons.Filled.ContentPaste, contentDescription = "Paste")
+//                }
+            }
 
             Spacer(Modifier.height(20.dp))
             Text("Foreground Color (RGB)")
 
-            var fgR by remember { mutableStateOf(foregroundColor shr 16 and 0xFF) }
-            var fgG by remember { mutableStateOf(foregroundColor shr 8 and 0xFF) }
-            var fgB by remember { mutableStateOf(foregroundColor and 0xFF) }
+            var fgR by rememberSaveable { mutableStateOf(foregroundColor shr 16 and 0xFF) }
+            var fgG by rememberSaveable { mutableStateOf(foregroundColor shr 8 and 0xFF) }
+            var fgB by rememberSaveable { mutableStateOf(foregroundColor and 0xFF) }
 
             ColorSliders("Red", fgR) { fgR = it; foregroundColor = Color.rgb(fgR, fgG, fgB) }
             ColorSliders("Green", fgG) { fgG = it; foregroundColor = Color.rgb(fgR, fgG, fgB) }
@@ -103,9 +127,9 @@ fun QrGeneratorScreen(navController: NavController) {
             Spacer(Modifier.height(20.dp))
             Text("Background Color (RGB)")
 
-            var bgR by remember { mutableStateOf(backgroundColor shr 16 and 0xFF) }
-            var bgG by remember { mutableStateOf(backgroundColor shr 8 and 0xFF) }
-            var bgB by remember { mutableStateOf(backgroundColor and 0xFF) }
+            var bgR by rememberSaveable { mutableStateOf(backgroundColor shr 16 and 0xFF) }
+            var bgG by rememberSaveable { mutableStateOf(backgroundColor shr 8 and 0xFF) }
+            var bgB by rememberSaveable { mutableStateOf(backgroundColor and 0xFF) }
 
             ColorSliders("Red", bgR) { bgR = it; backgroundColor = Color.rgb(bgR, bgG, bgB) }
             ColorSliders("Green", bgG) { bgG = it; backgroundColor = Color.rgb(bgR, bgG, bgB) }
@@ -114,9 +138,9 @@ fun QrGeneratorScreen(navController: NavController) {
             Spacer(Modifier.height(20.dp))
             Text("Border Color (RGB)")
 
-            var brR by remember { mutableStateOf(borderColor shr 16 and 0xFF) }
-            var brG by remember { mutableStateOf(borderColor shr 8 and 0xFF) }
-            var brB by remember { mutableStateOf(borderColor and 0xFF) }
+            var brR by rememberSaveable { mutableStateOf(borderColor shr 16 and 0xFF) }
+            var brG by rememberSaveable { mutableStateOf(borderColor shr 8 and 0xFF) }
+            var brB by rememberSaveable { mutableStateOf(borderColor and 0xFF) }
 
             ColorSliders("Red", brR) { brR = it; borderColor = Color.rgb(brR, brG, brB) }
             ColorSliders("Green", brG) { brG = it; borderColor = Color.rgb(brR, brG, brB) }

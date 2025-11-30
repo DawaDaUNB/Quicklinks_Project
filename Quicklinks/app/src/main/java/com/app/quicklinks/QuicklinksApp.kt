@@ -22,7 +22,8 @@ class QuicklinksApp : Application() {
             applicationContext,
             AppDatabase::class.java,
             "quicklinks-db"
-        ).build()
+        ).fallbackToDestructiveMigration()
+            .build()
 
         repository = ScanRepository(database.scanDao())
 
@@ -30,7 +31,8 @@ class QuicklinksApp : Application() {
             applicationContext,
             UserDatabase::class.java,
             "quicklinks-user-db"
-        ).build()
+        ).fallbackToDestructiveMigration()
+            .build()
         userRepository = UserRepository(userDatabase.userDao())
 
     }

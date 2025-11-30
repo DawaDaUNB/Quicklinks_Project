@@ -21,9 +21,17 @@ class ScanViewModel(private val repo: ScanRepository) : ViewModel() {
         }
     }
 
-    fun saveScan(value: String) {
+    fun loadHistoryAlphabetical() {
         viewModelScope.launch {
-            repo.saveScan(value)
+            repo.getHistoryAlphabetical().collect { list ->
+                _history.value = list
+            }
+        }
+    }
+
+    fun saveScan(value: String, oURL: String, sURL: String) {
+        viewModelScope.launch {
+            repo.saveScan(value, oURL, sURL)
             loadHistory()
         }
     }
@@ -31,6 +39,20 @@ class ScanViewModel(private val repo: ScanRepository) : ViewModel() {
     fun deleteScan(scan: Scan) {
         viewModelScope.launch {
             repo.deleteScan(scan)
+            loadHistory()
+        }
+    }
+
+    fun updateName(scan: Scan,newName: String) {
+        viewModelScope.launch {
+            repo.updateScanName(scan.id,newName)
+            loadHistory()
+        }
+    }
+
+    fun updateFavorite(scan: Scan, favorite: Boolean) {
+        viewModelScope.launch {
+            repo.updateScanFavorite(scan.id,favorite)
             loadHistory()
         }
     }

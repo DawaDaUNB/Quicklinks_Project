@@ -82,15 +82,15 @@ fun HomeScreen(navController: NavController) {
                 )
 
                 DashboardCard(
-                    title = "View History",
-                    icon = Icons.Default.History,
-                    onClick = { navController.navigate(NavRoutes.History.route) }
-                )
-
-                DashboardCard(
                     title = "Generate QR Code",
                     icon = Icons.Default.QrCode2,
                     onClick = { navController.navigate(NavRoutes.Generator.route) }
+                )
+
+                DashboardCard(
+                    title = "View History",
+                    icon = Icons.Default.History,
+                    onClick = { navController.navigate(NavRoutes.History.route) }
                 )
             }
         }

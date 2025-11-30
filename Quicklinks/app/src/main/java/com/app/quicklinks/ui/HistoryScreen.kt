@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckBox
+import androidx.compose.material.icons.filled.CheckBoxOutlineBlank
 import androidx.compose.material.icons.filled.CopyAll
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
@@ -81,6 +83,17 @@ fun HistoryScreen(navController: NavController) {
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
+                        IconButton(onClick = {
+                            viewModel.updateFavorite(scan, (!scan.favorite))
+                        }) {
+                            if(scan.favorite) {
+                                Icon(Icons.Filled.CheckBox, contentDescription = "Unfavorite")
+                            }
+                            else {
+                                Icon(Icons.Filled.CheckBoxOutlineBlank, contentDescription = "Favorite")
+                            }
+                        }
+
                         Text(
                             scan.text,
                             modifier = Modifier.weight(1f)
@@ -94,8 +107,31 @@ fun HistoryScreen(navController: NavController) {
                             Icon(Icons.Filled.CopyAll, contentDescription = "Copy scan")
                         }
 
-                        IconButton(onClick = { viewModel.deleteScan(scan) }) {
+                        var showDeleteDialog by remember { mutableStateOf(false) }
+
+                        IconButton(onClick = { showDeleteDialog = true } ) {
                             Icon(Icons.Default.Delete, contentDescription = "Delete scan")
+                        }
+
+                        if (showDeleteDialog) {
+                            AlertDialog(
+                                onDismissRequest = { showDeleteDialog = false },
+                                title = { Text("Delete scan?") },
+                                text = { Text("Are you sure you want to delete this scan? This action cannot be undone.") },
+                                confirmButton = {
+                                    TextButton(onClick = {
+                                        viewModel.deleteScan(scan)
+                                        showDeleteDialog = false
+                                    }) {
+                                        Text("Delete")
+                                    }
+                                },
+                                dismissButton = {
+                                    TextButton(onClick = { showDeleteDialog = false }) {
+                                        Text("Cancel")
+                                    }
+                                }
+                            )
                         }
                     }
                 }

@@ -6,16 +6,22 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.app.quicklinks.QuicklinksApp
 import com.app.quicklinks.R
+import com.app.quicklinks.viewmodel.ScanViewModel
+import com.app.quicklinks.viewmodel.ScanViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -27,11 +33,16 @@ import java.net.URLEncoder
 fun ShortenerScreen(navController: NavController) {
 
     val clipboardManager = LocalClipboardManager.current
-    var urlText by remember { mutableStateOf(TextFieldValue("")) }
-    var shortenedUrl by remember { mutableStateOf<String?>(null) }
-    var isLoading by remember { mutableStateOf(false) }
+    var urlText by rememberSaveable { mutableStateOf("") }
+    var shortenedUrl by rememberSaveable { mutableStateOf<String?>(null) }
+    var isLoading by rememberSaveable { mutableStateOf(false) }
     val client = remember { OkHttpClient() }
     val scope = rememberCoroutineScope()
+
+    val app = LocalContext.current.applicationContext as QuicklinksApp
+    val viewModel: ScanViewModel = viewModel(
+        factory = ScanViewModelFactory(app.repository)
+    )
 
     Box(
         modifier = Modifier
@@ -92,11 +103,11 @@ fun ShortenerScreen(navController: NavController) {
 
                     Button(
                         onClick = {
-                            if (urlText.text.isNotBlank()) {
+                            if (urlText.isNotBlank()) {
                                 isLoading = true
                                 shortenedUrl = null
                                 scope.launch {
-                                    val result = shortenUrl(client, urlText.text)
+                                    val result = shortenUrl(client, urlText)
                                     shortenedUrl = result
                                     isLoading = false
                                 }
@@ -134,6 +145,12 @@ fun ShortenerScreen(navController: NavController) {
                                 clipboardManager.setText(AnnotatedString(short))
                             }) {
                                 Text("Copy")
+                            }
+                            // TODO: Save link to history
+                            Button(onClick = {
+                                shortenedUrl?.let { viewModel.saveScan(urlText,urlText,it) }
+                            }) {
+                                Text("Save")
                             }
                             Button(onClick = {
                                 navController.context.startActivity(
