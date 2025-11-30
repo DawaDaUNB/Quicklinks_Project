@@ -4,6 +4,8 @@ import androidx.core.net.toUri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentPaste
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -93,13 +95,26 @@ fun ShortenerScreen(navController: NavController) {
                     verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
 
-                    OutlinedTextField(
-                        value = urlText,
-                        onValueChange = { urlText = it },
-                        label = { Text("Enter URL") },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true
-                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 2.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        OutlinedTextField(
+                            value = urlText,
+                            onValueChange = { urlText = it },
+                            label = { Text("Enter URL") },
+                        )
+
+                        IconButton(onClick = {
+                            urlText = clipboardManager.getText().toString()
+                        }, enabled = !isLoading) {
+                            Icon(Icons.Filled.ContentPaste, contentDescription = "Copy paste URL")
+                        }
+
+                    }
 
                     Button(
                         onClick = {

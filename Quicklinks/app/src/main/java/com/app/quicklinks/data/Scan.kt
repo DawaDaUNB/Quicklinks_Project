@@ -13,4 +13,5 @@ data class Scan(
     val qrCode: ByteArray?,
     val favorite: Boolean,
     val timestamp: Long
+    //val userId: Long
 )

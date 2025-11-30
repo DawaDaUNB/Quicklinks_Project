@@ -41,6 +41,8 @@ fun QrGeneratorScreen(navController: NavController) {
     var borderColor by rememberSaveable { mutableStateOf(Color.BLACK) }
     var qrBitmap by rememberSaveable { mutableStateOf<Bitmap?>(null) }
 
+    val clipboardManager = LocalClipboardManager.current
+
     LaunchedEffect(text, foregroundColor, backgroundColor, borderSize, borderColor) {
         if (text.isNotBlank()) {
             qrBitmap = generateQrBitmap(
@@ -92,26 +94,24 @@ fun QrGeneratorScreen(navController: NavController) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp),
+                    .padding(vertical = 2.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
-            ){
+            ) {
+                OutlinedTextField(
+                    value = text,
+                    onValueChange = { text = it },
+                    label = { Text("Enter URL") },
+                )
 
+                IconButton(onClick = {
+                    text = clipboardManager.getText().toString()
+                }) {
+                    Icon(Icons.Filled.ContentPaste, contentDescription = "Copy paste URL")
+                }
 
-            OutlinedTextField(
-                value = text,
-                onValueChange = { text = it },
-                label = { Text("Enter text or URL") },
-                modifier = Modifier.fillMaxWidth()
-            )
-//                val clipboardManager = LocalClipboard.current
-//
-//                IconButton(onClick = {
-//                    text = clipboardManager.toString()
-//                }) {
-//                    Icon(Icons.Filled.ContentPaste, contentDescription = "Paste")
-//                }
             }
+
 
             Spacer(Modifier.height(20.dp))
             Text("Foreground Color (RGB)")

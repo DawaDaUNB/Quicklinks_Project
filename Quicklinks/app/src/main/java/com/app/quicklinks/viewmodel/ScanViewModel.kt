@@ -12,6 +12,7 @@ class ScanViewModel(private val repo: ScanRepository) : ViewModel() {
 
     private val _history = MutableStateFlow<List<Scan>>(emptyList())
     val history: StateFlow<List<Scan>> = _history
+    var fold: Boolean = false
 
     fun loadHistory() {
         viewModelScope.launch {
@@ -55,5 +56,9 @@ class ScanViewModel(private val repo: ScanRepository) : ViewModel() {
             repo.updateScanFavorite(scan.id,favorite)
             loadHistory()
         }
+    }
+
+    fun foldUp(folder: Boolean) {
+        fold = folder
     }
 }

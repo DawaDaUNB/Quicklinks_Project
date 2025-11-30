@@ -28,4 +28,7 @@ interface ScanDao {
 
     @Query("UPDATE scans SET qrCode = :newQRCode WHERE id = :scanId")
     suspend fun updateScanQR(scanId: Long, newQRCode: ByteArray?)
+
+    // @Query("SELECT * FROM scans WHERE text LIKE '%' || :searchQuery || '%'")
+    //fun searchBySubstring(searchQuery: String)
 }
