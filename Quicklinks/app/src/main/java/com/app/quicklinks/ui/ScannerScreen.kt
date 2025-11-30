@@ -16,6 +16,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -23,16 +26,17 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import androidx.camera.core.ImageProxy
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.app.quicklinks.QuicklinksApp
+import com.app.quicklinks.R
 import com.app.quicklinks.viewmodel.ScanViewModel
 import com.app.quicklinks.viewmodel.ScanViewModelFactory
 import com.google.accompanist.permissions.isGranted
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun ScannerScreen() {
+fun ScannerScreen(navController: NavController) {
 
     val app = LocalContext.current.applicationContext as QuicklinksApp
     val viewModel: ScanViewModel = viewModel(
@@ -46,7 +50,28 @@ fun ScannerScreen() {
     var lastScanTime by remember { mutableStateOf<Long?>(null) }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("QR Scanner") }) }
+        topBar = {
+            TopAppBar(
+                title = { Text("QR Scanner", fontSize = 20.sp) },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        navController.navigate("home") {
+                            popUpTo("scanner") { inclusive = true }
+                        }
+                    }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_arrow_back),
+                            contentDescription = "Back",
+                            tint = androidx.compose.ui.graphics.Color.White
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = androidx.compose.ui.graphics.Color(0xFF4487E2),
+                    titleContentColor = androidx.compose.ui.graphics.Color.White
+                )
+            )
+        }
     ) { padding ->
 
         if (cameraPermissionState.status.isGranted) {
@@ -103,7 +128,6 @@ fun ScannerScreen() {
                 }
             )
 
-            // If QR found, show it on screen
             scannedCode?.let {
                 Text(
                     text = "Scanned Code: $it",
@@ -112,7 +136,6 @@ fun ScannerScreen() {
                 )
             }
         } else {
-            // Ask for permission
             LaunchedEffect(Unit) { cameraPermissionState.launchPermissionRequest() }
             Text(
                 text = "Camera permission required to scan QR codes",
