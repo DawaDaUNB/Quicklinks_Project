@@ -60,7 +60,33 @@ fun QrGeneratorScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("QR Generator", fontSize = 20.sp) },
+                title = {
+                    Box(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            "QR Generator",
+                            modifier = Modifier.align(Alignment.CenterStart)
+                        )
+                        Spacer(Modifier.height(12.dp))
+
+                        qrBitmap?.let { bm ->
+                            Image(
+                                bitmap = bm.asImageBitmap(),
+                                contentDescription = "QR Preview",
+                                modifier = Modifier
+                                    .size(48.dp)
+                                    .align(Alignment.Center)
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .size(48.dp)                     // same size as QR
+                                .align(Alignment.CenterEnd)      // symmetrical padding
+                        )
+                    }
+                },
                 navigationIcon = {
                     IconButton(onClick = {
                         navController.navigate("home") {
@@ -113,12 +139,12 @@ fun QrGeneratorScreen(navController: NavController) {
             }
 
 
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(30.dp))
             Text("Foreground Color (RGB)")
 
-            var fgR by rememberSaveable { mutableStateOf(foregroundColor shr 16 and 0xFF) }
-            var fgG by rememberSaveable { mutableStateOf(foregroundColor shr 8 and 0xFF) }
-            var fgB by rememberSaveable { mutableStateOf(foregroundColor and 0xFF) }
+            var fgR by rememberSaveable { mutableIntStateOf(foregroundColor shr 16 and 0xFF) }
+            var fgG by rememberSaveable { mutableIntStateOf(foregroundColor shr 8 and 0xFF) }
+            var fgB by rememberSaveable { mutableIntStateOf(foregroundColor and 0xFF) }
 
             ColorSliders("Red", fgR) { fgR = it; foregroundColor = Color.rgb(fgR, fgG, fgB) }
             ColorSliders("Green", fgG) { fgG = it; foregroundColor = Color.rgb(fgR, fgG, fgB) }
@@ -127,32 +153,33 @@ fun QrGeneratorScreen(navController: NavController) {
             Spacer(Modifier.height(20.dp))
             Text("Background Color (RGB)")
 
-            var bgR by rememberSaveable { mutableStateOf(backgroundColor shr 16 and 0xFF) }
-            var bgG by rememberSaveable { mutableStateOf(backgroundColor shr 8 and 0xFF) }
-            var bgB by rememberSaveable { mutableStateOf(backgroundColor and 0xFF) }
+            var bgR by rememberSaveable { mutableIntStateOf(backgroundColor shr 16 and 0xFF) }
+            var bgG by rememberSaveable { mutableIntStateOf(backgroundColor shr 8 and 0xFF) }
+            var bgB by rememberSaveable { mutableIntStateOf(backgroundColor and 0xFF) }
 
             ColorSliders("Red", bgR) { bgR = it; backgroundColor = Color.rgb(bgR, bgG, bgB) }
             ColorSliders("Green", bgG) { bgG = it; backgroundColor = Color.rgb(bgR, bgG, bgB) }
             ColorSliders("Blue", bgB) { bgB = it; backgroundColor = Color.rgb(bgR, bgG, bgB) }
 
-            Spacer(Modifier.height(20.dp))
-            Text("Border Color (RGB)")
-
-            var brR by rememberSaveable { mutableStateOf(borderColor shr 16 and 0xFF) }
-            var brG by rememberSaveable { mutableStateOf(borderColor shr 8 and 0xFF) }
-            var brB by rememberSaveable { mutableStateOf(borderColor and 0xFF) }
-
-            ColorSliders("Red", brR) { brR = it; borderColor = Color.rgb(brR, brG, brB) }
-            ColorSliders("Green", brG) { brG = it; borderColor = Color.rgb(brR, brG, brB) }
-            ColorSliders("Blue", brB) { brB = it; borderColor = Color.rgb(brR, brG, brB) }
-
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(30.dp))
             Text("Border Size: ${borderSize.toInt()}")
             Slider(
                 value = borderSize,
                 onValueChange = { borderSize = it },
                 valueRange = 0f..20f
             )
+
+            Spacer(Modifier.height(20.dp))
+            Text("Border Color (RGB)")
+
+            var brR by rememberSaveable { mutableIntStateOf(borderColor shr 16 and 0xFF) }
+            var brG by rememberSaveable { mutableIntStateOf(borderColor shr 8 and 0xFF) }
+            var brB by rememberSaveable { mutableIntStateOf(borderColor and 0xFF) }
+
+            ColorSliders("Red", brR) { brR = it; borderColor = Color.rgb(brR, brG, brB) }
+            ColorSliders("Green", brG) { brG = it; borderColor = Color.rgb(brR, brG, brB) }
+            ColorSliders("Blue", brB) { brB = it; borderColor = Color.rgb(brR, brG, brB) }
+
 
             Spacer(Modifier.height(20.dp))
 

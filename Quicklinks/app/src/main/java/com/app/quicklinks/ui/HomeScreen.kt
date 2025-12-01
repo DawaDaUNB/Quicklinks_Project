@@ -8,6 +8,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +33,8 @@ fun HomeScreen(navController: NavController) {
     ) {
         Spacer(modifier = Modifier.height(40.dp))
 
+        var showLogoutDialog by remember { mutableStateOf(false) }
+
         Icon(
             painter = painterResource(id = R.drawable.ic_arrow_back),
             contentDescription = "Back",
@@ -37,12 +43,33 @@ fun HomeScreen(navController: NavController) {
                 .align(Alignment.Start)
                 .padding(start = 26.dp)
                 .clickable {
-                    navController.navigate(NavRoutes.Login.route) {
-                        popUpTo(NavRoutes.Home.route) { inclusive = true }
-                    }
+                    showLogoutDialog = true
                 }
                 .size(28.dp)
         )
+
+        if (showLogoutDialog) {
+            AlertDialog(
+                onDismissRequest = { showLogoutDialog = false },
+                title = { Text("Log Out") },
+                text = { Text("Are you sure you want to log out?") },
+                confirmButton = {
+                    TextButton(onClick = {
+                        showLogoutDialog = false
+                        navController.navigate(NavRoutes.Login.route) {
+                            popUpTo(NavRoutes.Home.route) { inclusive = true }
+                        }
+                    }) {
+                        Text("Log out")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showLogoutDialog = false }) {
+                        Text("Cancel")
+                    }
+                }
+            )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 

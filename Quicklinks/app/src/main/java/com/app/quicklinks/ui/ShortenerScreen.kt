@@ -129,7 +129,7 @@ fun ShortenerScreen(navController: NavController) {
                             }
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        enabled = !isLoading,
+                        enabled = !isLoading && urlText != "",
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF4487E2),
                             contentColor = Color.White

@@ -40,7 +40,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(60.dp))
 
         Text(
-            text = "Welcome Back",
+            text = "QuickLinks",
             color = Color.White,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold

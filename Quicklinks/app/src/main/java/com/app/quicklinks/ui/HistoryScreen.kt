@@ -50,6 +50,19 @@ fun HistoryScreen(navController: NavController) {
             TopAppBar(
                 title = { Text("History", fontSize = 20.sp) },
                 navigationIcon = {
+//                    IconButton(onClick = {
+//                        navController.navigate("home") {
+//                            popUpTo("history") { inclusive = true }
+//                        }
+//                    }) {
+//                        Icon(
+//                            painter = painterResource(id = R.drawable.ic_arrow_back),
+//                            contentDescription = "Back",
+//                            tint = androidx.compose.ui.graphics.Color.White
+//                        )
+//                    }
+                },
+                actions = {
                     IconButton(onClick = {
                         navController.navigate("home") {
                             popUpTo("history") { inclusive = true }
@@ -61,13 +74,14 @@ fun HistoryScreen(navController: NavController) {
                             tint = androidx.compose.ui.graphics.Color.White
                         )
                     }
-                },
-                actions = {
                     IconButton(onClick = { viewModel.loadHistoryAlphabetical() }) {
-                        Icon(Icons.Filled.SortByAlpha, contentDescription = "Search by Id")
+                        Icon(Icons.Filled.SortByAlpha, contentDescription = "Search by Id",                             tint = androidx.compose.ui.graphics.Color.White
+                        )
+
                     }
                     IconButton(onClick = { viewModel.loadHistory() }) {
-                        Icon(Icons.Filled.DateRange, contentDescription = "Search by Date")
+                        Icon(Icons.Filled.DateRange, contentDescription = "Search by Date",                             tint = androidx.compose.ui.graphics.Color.White
+                        )
                     }
                     OutlinedTextField(
                         value = searchText,

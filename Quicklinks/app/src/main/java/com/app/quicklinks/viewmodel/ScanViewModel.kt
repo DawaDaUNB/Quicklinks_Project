@@ -30,6 +30,14 @@ class ScanViewModel(private val repo: ScanRepository) : ViewModel() {
         }
     }
 
+    fun searchHistory() {
+        viewModelScope.launch {
+            repo.getHistoryAlphabetical().collect { list ->
+                _history.value = list
+            }
+        }
+    }
+
     fun saveScan(value: String, oURL: String, sURL: String) {
         viewModelScope.launch {
             repo.saveScan(value, oURL, sURL)

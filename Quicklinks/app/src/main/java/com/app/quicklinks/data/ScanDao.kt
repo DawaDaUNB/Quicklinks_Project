@@ -11,11 +11,17 @@ interface ScanDao {
     @Insert
     suspend fun insertScan(scan: Scan)
 
-    @Query("SELECT * FROM scans ORDER BY favorite DESC, id DESC")
+    @Query("SELECT * FROM scans ORDER BY favorite DESC, id ASC")
     suspend fun getAllScans(): List<Scan>
 
-    @Query("SELECT * FROM scans ORDER BY favorite DESC, text DESC")
+    @Query("SELECT * FROM scans ORDER BY favorite DESC, text ASC")
     suspend fun getAllScansAlphabetical(): List<Scan>
+
+    @Query("SELECT * FROM scans ORDER BY favorite DESC, id DESC")
+    suspend fun getAllScansReverse(): List<Scan>
+
+    @Query("SELECT * FROM scans ORDER BY favorite DESC, text DESC")
+    suspend fun getAllScansAlphabeticalReverse(): List<Scan>
 
     @Delete
     suspend fun deleteScan(scan: Scan)
