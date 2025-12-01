@@ -18,6 +18,14 @@ class QuicklinksApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        userDatabase = Room.databaseBuilder(
+            applicationContext,
+            UserDatabase::class.java,
+            "quicklinks-user-db"
+        ).fallbackToDestructiveMigration()
+            .build()
+        userRepository = UserRepository(userDatabase.userDao())
+
         database = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
@@ -26,14 +34,6 @@ class QuicklinksApp : Application() {
             .build()
 
         repository = ScanRepository(database.scanDao())
-
-        userDatabase = Room.databaseBuilder(
-            applicationContext,
-            UserDatabase::class.java,
-            "quicklinks-user-db"
-        ).fallbackToDestructiveMigration()
-            .build()
-        userRepository = UserRepository(userDatabase.userDao())
 
     }
 }

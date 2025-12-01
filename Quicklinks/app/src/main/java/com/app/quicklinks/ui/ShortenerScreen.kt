@@ -3,6 +3,7 @@ package com.app.quicklinks.ui
 import androidx.core.net.toUri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentPaste
@@ -112,7 +113,11 @@ fun ShortenerScreen(navController: NavController) {
                         IconButton(onClick = {
                             urlText = clipboardManager.getText().toString()
                         }, enabled = !isLoading) {
-                            Icon(Icons.Filled.ContentPaste, contentDescription = "Copy paste URL", modifier = Modifier.padding(start = 8.dp) )
+                            Icon(
+                                Icons.Filled.ContentPaste,
+                                contentDescription = "Copy paste URL",
+                                modifier = Modifier.padding(start = 8.dp)
+                            )
                         }
 
                     }
@@ -155,9 +160,13 @@ fun ShortenerScreen(navController: NavController) {
                             style = MaterialTheme.typography.bodyLarge
                         )
 
-                        if(!short.contains("Error")) {
+                        if (!short.contains("Error")) {
                             Row(
-                                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 2.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Button(onClick = {
                                     clipboardManager.setText(AnnotatedString(short))

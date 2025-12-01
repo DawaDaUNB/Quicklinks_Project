@@ -7,14 +7,14 @@ import kotlinx.coroutines.launch
 
 class UserViewModel(private val repository: UserRepository) : ViewModel() {
 
-    fun registerUser(email: String, password: String, onResult: (Boolean) -> Unit) {
+    fun registerUser(email: String, username: String, password: String, onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             val exists = repository.doesUserExist(email)
 
             if (exists) {
                 onResult(false)
             } else {
-                repository.createUser(email, password)
+                repository.createUser(email, username, password)
                 onResult(true)
             }
         }

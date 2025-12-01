@@ -8,7 +8,7 @@ import com.app.quicklinks.data.ScanDao
 
 @Database(
     entities = [Scan::class],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(QRCodeConverter::class)

@@ -4,18 +4,21 @@ import com.app.quicklinks.data.Scan
 
 class UserRepository(private val dao: UserDao) {
 
-    suspend fun createUser(email: String, password: String) {
+    suspend fun createUser(email: String, username: String, password: String) {
         dao.insertUser(UserEntity(
-            username = email,
+            username = username,
             email = email,
             password = password
         ))
     }
 
-    suspend fun loginUser(email: String, password: String): Boolean {
-        return dao.login(email, password) != null
+    suspend fun loginUser(emailOrUsername: String, password: String): Boolean {
+        return dao.login(emailOrUsername, password) != null
     }
 
+    suspend fun doesUserExist(userId: Long): Boolean {
+        return dao.getUserById(userId) != null
+    }
     suspend fun doesUserExist(email: String): Boolean {
         return dao.getUserByEmail(email) != null
     }

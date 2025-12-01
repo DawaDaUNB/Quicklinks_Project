@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckBox
-import androidx.compose.material.icons.filled.CheckBoxOutlineBlank
 import androidx.compose.material.icons.filled.ContentPaste
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -18,7 +16,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -29,7 +26,7 @@ import com.app.quicklinks.R
 import com.app.quicklinks.utils.generateQrBitmap
 import com.app.quicklinks.utils.saveQrToGallery
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
-import android.widget.TextView
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QrGeneratorScreen(navController: NavController) {
@@ -135,7 +132,11 @@ fun QrGeneratorScreen(navController: NavController) {
                 IconButton(onClick = {
                     text = clipboardManager.getText().toString()
                 }) {
-                    Icon(Icons.Filled.ContentPaste, contentDescription = "Copy paste URL",  modifier = Modifier.padding(start = 8.dp))
+                    Icon(
+                        Icons.Filled.ContentPaste,
+                        contentDescription = "Copy paste URL",
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
                 }
 
             }

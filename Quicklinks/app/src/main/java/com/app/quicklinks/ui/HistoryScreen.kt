@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.CopyAll
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SortByAlpha
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -39,7 +40,6 @@ fun HistoryScreen(navController: NavController) {
     val viewModel: ScanViewModel = viewModel(
         factory = ScanViewModelFactory(app.repository)
     )
-
     val history by viewModel.history.collectAsState()
     var searchText by rememberSaveable { mutableStateOf("") }
 
@@ -83,6 +83,13 @@ fun HistoryScreen(navController: NavController) {
                         onValueChange = { searchText = it },
                         label = { Text("Type to Search") },
                     )
+                    IconButton(onClick = { viewModel.searchHistory(searchText) }) {
+                        Icon(
+                            Icons.Filled.Search,
+                            contentDescription = "Search by Name",
+                            tint = androidx.compose.ui.graphics.Color.White
+                        )
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = androidx.compose.ui.graphics.Color(0xFF4487E2),
@@ -150,7 +157,7 @@ fun HistoryScreen(navController: NavController) {
                                     val clipboard = LocalClipboardManager.current
 
                                     IconButton(onClick = {
-                                        clipboard.setText(AnnotatedString(scan.text))
+                                        clipboard.setText(AnnotatedString(scan.shortcode))
                                     }) {
                                         Icon(Icons.Filled.CopyAll, contentDescription = "Copy scan")
                                     }
@@ -185,45 +192,50 @@ fun HistoryScreen(navController: NavController) {
                                         )
                                     }
                                 }
-                                    AnimatedVisibility(visible = !retract)  {
-                                        Column(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(vertical = 12.dp),
+                                AnimatedVisibility(visible = !retract) {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 12.dp),
 
-                                            ) {
-                                            Text("Original: " + scan.originalUrl)
-                                            Spacer(Modifier.height(20.dp))
-                                            Text("Shortcode: " + scan.shortcode)
+                                        ) {
+                                        Text("Original: " + scan.originalUrl)
+                                        Spacer(Modifier.height(20.dp))
+                                        Text("Shortcode: " + scan.shortcode)
 
+                                        Spacer(Modifier.height(20.dp))
+                                        if (editName) {
+                                            var newName by remember { mutableStateOf("") }
+                                            OutlinedTextField(
+                                                value = newName,
+                                                onValueChange = { newName = it },
+                                                label = { Text("Enter new name") },
+                                            )
                                             Spacer(Modifier.height(20.dp))
-                                            if (editName) {
-                                                var newName by remember { mutableStateOf("") }
-                                                OutlinedTextField(
-                                                    value = newName,
-                                                    onValueChange = { newName = it },
-                                                    label = { Text("Enter new name") },
+                                            Button(onClick = {
+                                                viewModel.updateName(
+                                                    scan,
+                                                    newName
+                                                ); editName = !editName
+                                            }) {
+                                                Icon(
+                                                    Icons.Default.Edit,
+                                                    contentDescription = "Rename Scan"
                                                 )
-                                                Button(onClick = {   viewModel.updateName(scan, newName); editName = !editName }) {
-                                                    Icon(
-                                                        Icons.Default.Edit,
-                                                        contentDescription = "Rename Scan"
-                                                    )
-                                                    Text("Rename Scan")
-                                                }
+                                                Text("Rename Scan")
                                             }
-                                            else {
-                                                Button(onClick = { editName = !editName }) {
-                                                    Icon(
-                                                        Icons.Default.Edit,
-                                                        contentDescription = "Rename Scan"
-                                                    )
-                                                    Text("Rename Scan")
-                                                }
+                                        } else {
+                                            Button(onClick = { editName = !editName }) {
+                                                Icon(
+                                                    Icons.Default.Edit,
+                                                    contentDescription = "Rename Scan"
+                                                )
+                                                Text("Rename Scan")
                                             }
-
                                         }
+
                                     }
+                                }
 
                             })
                 }

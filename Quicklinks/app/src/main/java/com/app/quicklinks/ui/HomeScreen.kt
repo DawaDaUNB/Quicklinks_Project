@@ -31,8 +31,8 @@ fun HomeScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
-            .fillMaxSize()
-            .background(Color(0xFF4487E2)),
+            .fillMaxSize(),
+       //     .background(Color(0xFF4487E2)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(40.dp))
@@ -42,7 +42,7 @@ fun HomeScreen(navController: NavController) {
         Icon(
             painter = painterResource(id = R.drawable.ic_arrow_back),
             contentDescription = "Back",
-            tint = Color.White,
+            //tint = Color.White,
             modifier = Modifier
                 .align(Alignment.Start)
                 .padding(start = 26.dp)
@@ -79,7 +79,7 @@ fun HomeScreen(navController: NavController) {
 
         Text(
             text = "Home",
-            color = Color.White,
+            //  color = Color.White,
             fontSize = 40.sp,
             fontWeight = FontWeight.Bold
         )
@@ -90,7 +90,7 @@ fun HomeScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
 //                .background(
-//                    color = colo,
+//                    color = Color.White,
 //                    shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
 //                )
         ) {
@@ -141,7 +141,7 @@ fun DashboardCard(
 
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5)),
+        //    colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5)),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Row(

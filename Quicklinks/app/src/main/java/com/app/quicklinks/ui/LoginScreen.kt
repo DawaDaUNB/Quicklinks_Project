@@ -22,11 +22,23 @@ import com.app.quicklinks.R
 import com.app.quicklinks.viewmodel.UserViewModel
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.app.quicklinks.QuicklinksApp
+import com.app.quicklinks.viewmodel.ScanViewModel
+import com.app.quicklinks.viewmodel.ScanViewModelFactory
+
 @Composable
 fun LoginScreen(
     navController: NavController,
     userViewModel: UserViewModel
 ) {
+
+
+    val app = LocalContext.current.applicationContext as QuicklinksApp
+    val viewModel: ScanViewModel = viewModel(
+        factory = ScanViewModelFactory(app.repository)
+    )
 
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
@@ -38,7 +50,7 @@ fun LoginScreen(
             .verticalScroll(rememberScrollState())
             .fillMaxSize()
             .background(Color(0xFF4487E2)),
-    horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(60.dp))
 
@@ -142,6 +154,7 @@ fun LoginScreen(
                         userViewModel.loginUser(email, password) { success ->
                             if (success) {
                                 loginError = null
+                                viewModel.changeUser(2)
                                 navController.navigate("home") {
                                     popUpTo("login") { inclusive = true }
                                 }
@@ -165,6 +178,7 @@ fun LoginScreen(
 
                 OutlinedButton(
                     onClick = {
+
                         navController.navigate("home") {
                             popUpTo("login") { inclusive = true }
                         }
@@ -186,6 +200,7 @@ fun LoginScreen(
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.padding(20.dp))
 
                 Row(
                     modifier = Modifier.padding(bottom = 24.dp),

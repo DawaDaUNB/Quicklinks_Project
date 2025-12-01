@@ -33,11 +33,17 @@ import com.app.quicklinks.R
 import com.app.quicklinks.viewmodel.ScanViewModel
 import com.app.quicklinks.viewmodel.ScanViewModelFactory
 import com.google.accompanist.permissions.isGranted
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import java.net.URLEncoder
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ScannerScreen(navController: NavController) {
 
+    val client = remember { OkHttpClient() }
     val app = LocalContext.current.applicationContext as QuicklinksApp
     val viewModel: ScanViewModel = viewModel(
         factory = ScanViewModelFactory(app.repository)
@@ -99,11 +105,29 @@ fun ScannerScreen(navController: NavController) {
                             processImageProxy(barcodeScanner, imageProxy) { result ->
                                 result?.let { value ->
                                     val now = System.currentTimeMillis()
-                                    if (value == scannedCode && (now - (lastScanTime ?: 0L)) < 2000L) {
+                                    if (value == scannedCode && (now - (lastScanTime
+                                            ?: 0L)) < 2000L
+                                    ) {
                                         return@let
                                     }
                                     scannedCode = value
                                     lastScanTime = now
+                                    try {
+                                        val encoded = URLEncoder.encode(value, "UTF-8")
+                                        val request = Request.Builder()
+                                            .url("https://is.gd/create.php?format=simple&url=$encoded")
+                                            .build()
+                                        val response = client.newCall(request).execute()
+                                        if (response.isSuccessful) {
+                                            val shortcode = response.body?.string()?.trim() ?: "Error: Empty response"
+                                            viewModel.saveScan(value,value, shortcode)
+
+                                        } else {
+                                            Toast.makeText(ctx,"Error: ${response.code}",Toast.LENGTH_SHORT).show()
+                                        }
+                                    } catch (e: Exception) {
+                                        Toast.makeText(ctx,"Error: ${e.message}",Toast.LENGTH_SHORT).show()
+                                    }
                                     viewModel.saveScan(value, value, value)
                                     Toast.makeText(ctx, "Code Scanned", Toast.LENGTH_SHORT).show()
                                     Log.d("QRScanner", "Detected: $value")
@@ -139,7 +163,10 @@ fun ScannerScreen(navController: NavController) {
             LaunchedEffect(Unit) { cameraPermissionState.launchPermissionRequest() }
             Text(
                 text = "Camera permission required to scan QR codes",
-                modifier = Modifier.padding(padding).padding(16.dp)
+                modifier = Modifier
+                    .padding(padding)
+                    .padding(16.dp)
+
             )
         }
     }
@@ -172,5 +199,25 @@ private fun processImageProxy(
             }
     } else {
         imageProxy.close()
+    }
+}
+
+
+suspend fun shorterUrl(client: OkHttpClient, longUrl: String): String {
+    return withContext(Dispatchers.IO) {
+        try {
+            val encoded = URLEncoder.encode(longUrl, "UTF-8")
+            val request = Request.Builder()
+                .url("https://is.gd/create.php?format=simple&url=$encoded")
+                .build()
+            val response = client.newCall(request).execute()
+            if (response.isSuccessful) {
+                response.body?.string()?.trim() ?: "Error: Empty response"
+            } else {
+                "Error: ${response.code}"
+            }
+        } catch (e: Exception) {
+            "Error: ${e.message}"
+        }
     }
 }

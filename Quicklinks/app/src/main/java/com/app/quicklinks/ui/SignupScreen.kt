@@ -26,6 +26,7 @@ fun SignupScreen(
     userViewModel: UserViewModel
 ) {
     var email by rememberSaveable { mutableStateOf("") }
+    var username by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var confirmPassword by rememberSaveable { mutableStateOf("") }
     var errorMessage by rememberSaveable { mutableStateOf("") }
@@ -87,6 +88,30 @@ fun SignupScreen(
                             contentDescription = null,
                             tint = Color(0xFF4487E2)
                         )
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color.Black,
+                        unfocusedBorderColor = Color.Black,
+                        cursorColor = Color.Black
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(34.dp))
+
+
+                OutlinedTextField(
+                    value = username,
+                    onValueChange = { username = it },
+                    placeholder = { Text("Username", color = Color.Gray) },
+                    leadingIcon = {
+//                        Icon(
+//                            painter = painterResource(id = R.drawable.ic_user),
+//                            contentDescription = null,
+//                            tint = Color(0xFF4487E2)
+//                        )
                     },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
@@ -182,10 +207,10 @@ fun SignupScreen(
                     onClick = {
                         if (password != confirmPassword) {
                             errorMessage = "Passwords do not match!"
-                        } else if (email.isBlank() || password.isBlank()) {
+                        } else if (email.isBlank() || username.isBlank() || password.isBlank()) {
                             errorMessage = "Please fill all fields."
                         } else {
-                            userViewModel.registerUser(email, password) { success ->
+                            userViewModel.registerUser(email, username, password) { success ->
                                 if (success) {
                                     navController.navigate("home") {
                                         popUpTo("signup") { inclusive = true }
