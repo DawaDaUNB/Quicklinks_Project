@@ -22,11 +22,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.app.quicklinks.NavRoutes
 import com.app.quicklinks.R
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+
 
 @Composable
 fun HomeScreen(navController: NavController) {
     Column(
         modifier = Modifier
+            .verticalScroll(rememberScrollState())
             .fillMaxSize()
             .background(Color(0xFF4487E2)),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -85,10 +89,10 @@ fun HomeScreen(navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    color = Color.White,
-                    shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
-                )
+//                .background(
+//                    color = colo,
+//                    shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
+//                )
         ) {
             Column(
                 modifier = Modifier
@@ -134,6 +138,7 @@ fun DashboardCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp)
+
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5)),

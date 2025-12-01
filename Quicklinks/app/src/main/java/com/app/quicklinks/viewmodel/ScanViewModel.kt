@@ -12,20 +12,40 @@ class ScanViewModel(private val repo: ScanRepository) : ViewModel() {
 
     private val _history = MutableStateFlow<List<Scan>>(emptyList())
     val history: StateFlow<List<Scan>> = _history
-    var fold: Boolean = true
+    var AZ: Boolean = true
+    var newest: Boolean = true
+
 
     fun loadHistory() {
         viewModelScope.launch {
-            repo.getHistory().collect { list ->
-                _history.value = list
+            if(newest) {
+                repo.getHistory().collect { list ->
+                    _history.value = list
+                }
+                newest = false;
+            }
+            else{
+                repo.getHistory().collect { list ->
+                    _history.value = list
+                }
+                newest = true;
             }
         }
     }
 
     fun loadHistoryAlphabetical() {
         viewModelScope.launch {
-            repo.getHistoryAlphabetical().collect { list ->
-                _history.value = list
+            if(AZ) {
+                repo.getHistoryAlphabetical().collect { list ->
+                    _history.value = list
+                }
+                AZ = false
+            }
+            else{
+                repo.getHistoryAlphabetical().collect { list ->
+                    _history.value = list
+                }
+                AZ = false
             }
         }
     }
@@ -66,7 +86,4 @@ class ScanViewModel(private val repo: ScanRepository) : ViewModel() {
         }
     }
 
-    fun foldUp() {
-        fold = !fold
-    }
 }

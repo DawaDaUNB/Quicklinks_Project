@@ -20,12 +20,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.app.quicklinks.R
 import com.app.quicklinks.viewmodel.UserViewModel
-
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 @Composable
 fun LoginScreen(
     navController: NavController,
     userViewModel: UserViewModel
 ) {
+
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var loginError by rememberSaveable { mutableStateOf<String?>(null) }
@@ -33,9 +35,10 @@ fun LoginScreen(
 
     Column(
         modifier = Modifier
+            .verticalScroll(rememberScrollState())
             .fillMaxSize()
             .background(Color(0xFF4487E2)),
-        horizontalAlignment = Alignment.CenterHorizontally
+    horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(60.dp))
 
@@ -59,7 +62,7 @@ fun LoginScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(24.dp),
+                    .padding(18.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 // EMAIL FIELD

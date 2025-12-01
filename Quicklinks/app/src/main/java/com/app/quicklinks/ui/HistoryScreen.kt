@@ -1,5 +1,6 @@
 package com.app.quicklinks.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,6 +11,7 @@ import androidx.compose.material.icons.filled.CheckBoxOutlineBlank
 import androidx.compose.material.icons.filled.CopyAll
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.SortByAlpha
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -49,19 +51,6 @@ fun HistoryScreen(navController: NavController) {
         topBar = {
             TopAppBar(
                 title = { Text("History", fontSize = 20.sp) },
-                navigationIcon = {
-//                    IconButton(onClick = {
-//                        navController.navigate("home") {
-//                            popUpTo("history") { inclusive = true }
-//                        }
-//                    }) {
-//                        Icon(
-//                            painter = painterResource(id = R.drawable.ic_arrow_back),
-//                            contentDescription = "Back",
-//                            tint = androidx.compose.ui.graphics.Color.White
-//                        )
-//                    }
-                },
                 actions = {
                     IconButton(onClick = {
                         navController.navigate("home") {
@@ -75,12 +64,18 @@ fun HistoryScreen(navController: NavController) {
                         )
                     }
                     IconButton(onClick = { viewModel.loadHistoryAlphabetical() }) {
-                        Icon(Icons.Filled.SortByAlpha, contentDescription = "Search by Id",                             tint = androidx.compose.ui.graphics.Color.White
+                        Icon(
+                            Icons.Filled.SortByAlpha,
+                            contentDescription = "Search by Id",
+                            tint = androidx.compose.ui.graphics.Color.White
                         )
 
                     }
                     IconButton(onClick = { viewModel.loadHistory() }) {
-                        Icon(Icons.Filled.DateRange, contentDescription = "Search by Date",                             tint = androidx.compose.ui.graphics.Color.White
+                        Icon(
+                            Icons.Filled.DateRange,
+                            contentDescription = "Search by Date",
+                            tint = androidx.compose.ui.graphics.Color.White
                         )
                     }
                     OutlinedTextField(
@@ -89,7 +84,7 @@ fun HistoryScreen(navController: NavController) {
                         label = { Text("Type to Search") },
                     )
                 },
-                    colors = TopAppBarDefaults.topAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = androidx.compose.ui.graphics.Color(0xFF4487E2),
                     titleContentColor = androidx.compose.ui.graphics.Color.White
                 )
@@ -108,8 +103,17 @@ fun HistoryScreen(navController: NavController) {
                 }
             } else {
 
-                    items(history) { scan ->
-                        (
+                items(history) { scan ->
+
+                    var retract by remember { mutableStateOf(true) }
+                    var editName by remember { mutableStateOf(false) }
+
+                    (
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp)
+                            ) {
 
                                 Row(
                                     modifier = Modifier
@@ -139,7 +143,8 @@ fun HistoryScreen(navController: NavController) {
                                         modifier = Modifier
                                             .weight(1f)
                                             .clickable {
-                                            viewModel.foldUp() }
+                                                retract = !retract
+                                            }
                                     )
 
                                     val clipboard = LocalClipboardManager.current
@@ -179,26 +184,50 @@ fun HistoryScreen(navController: NavController) {
                                             }
                                         )
                                     }
-                                })
-                        if (viewModel.fold) {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 8.dp),
+                                }
+                                    AnimatedVisibility(visible = !retract)  {
+                                        Column(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(vertical = 12.dp),
 
-                                ) {
-                                Text(
-                                    scan.originalUrl,
-                                    modifier = Modifier.weight(1f)
-                                )
-                                Text(
-                                    scan.shortcode,
-                                    modifier = Modifier.weight(1f)
-                                )
-                            }
-                        }
-                    }
+                                            ) {
+                                            Text("Original: " + scan.originalUrl)
+                                            Spacer(Modifier.height(20.dp))
+                                            Text("Shortcode: " + scan.shortcode)
+
+                                            Spacer(Modifier.height(20.dp))
+                                            if (editName) {
+                                                var newName by remember { mutableStateOf("") }
+                                                OutlinedTextField(
+                                                    value = newName,
+                                                    onValueChange = { newName = it },
+                                                    label = { Text("Enter new name") },
+                                                )
+                                                Button(onClick = {   viewModel.updateName(scan, newName); editName = !editName }) {
+                                                    Icon(
+                                                        Icons.Default.Edit,
+                                                        contentDescription = "Rename Scan"
+                                                    )
+                                                    Text("Rename Scan")
+                                                }
+                                            }
+                                            else {
+                                                Button(onClick = { editName = !editName }) {
+                                                    Icon(
+                                                        Icons.Default.Edit,
+                                                        contentDescription = "Rename Scan"
+                                                    )
+                                                    Text("Rename Scan")
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+                            })
                 }
             }
         }
     }
+}

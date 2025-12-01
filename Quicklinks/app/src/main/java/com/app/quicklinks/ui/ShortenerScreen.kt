@@ -16,7 +16,6 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -36,6 +35,7 @@ fun ShortenerScreen(navController: NavController) {
 
     val clipboardManager = LocalClipboardManager.current
     var urlText by rememberSaveable { mutableStateOf("") }
+    var saveUrl by rememberSaveable { mutableStateOf("") }
     var shortenedUrl by rememberSaveable { mutableStateOf<String?>(null) }
     var isLoading by rememberSaveable { mutableStateOf(false) }
     val client = remember { OkHttpClient() }
@@ -49,7 +49,7 @@ fun ShortenerScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF4487E2))
+            .background(Color(0xFF5487E2))
     ) {
         IconButton(
             onClick = { navController.popBackStack() },
@@ -67,7 +67,7 @@ fun ShortenerScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 80.dp),
+                .padding(top = 40.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -105,13 +105,14 @@ fun ShortenerScreen(navController: NavController) {
                         OutlinedTextField(
                             value = urlText,
                             onValueChange = { urlText = it },
-                            label = { Text("Enter URL") },
+                            modifier = Modifier.weight(1f),
+                            label = { Text("Enter URL") }
                         )
 
                         IconButton(onClick = {
                             urlText = clipboardManager.getText().toString()
                         }, enabled = !isLoading) {
-                            Icon(Icons.Filled.ContentPaste, contentDescription = "Copy paste URL")
+                            Icon(Icons.Filled.ContentPaste, contentDescription = "Copy paste URL", modifier = Modifier.padding(start = 8.dp) )
                         }
 
                     }
@@ -122,6 +123,7 @@ fun ShortenerScreen(navController: NavController) {
                                 isLoading = true
                                 shortenedUrl = null
                                 scope.launch {
+                                    saveUrl = urlText
                                     val result = shortenUrl(client, urlText)
                                     shortenedUrl = result
                                     isLoading = false
@@ -153,29 +155,37 @@ fun ShortenerScreen(navController: NavController) {
                             style = MaterialTheme.typography.bodyLarge
                         )
 
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            Button(onClick = {
-                                clipboardManager.setText(AnnotatedString(short))
-                            }) {
-                                Text("Copy")
-                            }
-                            // TODO: Save link to history
-                            Button(onClick = {
-                                shortenedUrl?.let { viewModel.saveScan(urlText,urlText,it) }
-                            }) {
-                                Text("Save")
-                            }
-                            Button(onClick = {
-                                navController.context.startActivity(
-                                    android.content.Intent(
-                                        android.content.Intent.ACTION_VIEW,
-                                        short.toUri()
+                        if(!short.contains("Error")) {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                            ) {
+                                Button(onClick = {
+                                    clipboardManager.setText(AnnotatedString(short))
+                                }) {
+                                    Text("Copy")
+                                }
+
+                                Button(onClick = {
+                                    shortenedUrl?.let {
+                                        viewModel.saveScan(
+                                            saveUrl,
+                                            saveUrl,
+                                            short
+                                        )
+                                    }
+                                }) {
+                                    Text("Save")
+                                }
+                                Button(onClick = {
+                                    navController.context.startActivity(
+                                        android.content.Intent(
+                                            android.content.Intent.ACTION_VIEW,
+                                            short.toUri()
+                                        )
                                     )
-                                )
-                            }) {
-                                Text("Open")
+                                }) {
+                                    Text("Open")
+                                }
                             }
                         }
                     }

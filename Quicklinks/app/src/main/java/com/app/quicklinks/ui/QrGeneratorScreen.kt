@@ -2,6 +2,7 @@ package com.app.quicklinks.ui
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.provider.Settings.Global.getString
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -28,7 +29,7 @@ import com.app.quicklinks.R
 import com.app.quicklinks.utils.generateQrBitmap
 import com.app.quicklinks.utils.saveQrToGallery
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
-
+import android.widget.TextView
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QrGeneratorScreen(navController: NavController) {
@@ -101,8 +102,8 @@ fun QrGeneratorScreen(navController: NavController) {
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = androidx.compose.ui.graphics.Color(0xFF4487E2),
-                    titleContentColor = androidx.compose.ui.graphics.Color.White
+//                    containerColor = androidx.compose.ui.graphics.Color(0xFF4487E2),
+//                    titleContentColor = androidx.compose.ui.graphics.Color.White
                 )
             )
         }
@@ -127,13 +128,14 @@ fun QrGeneratorScreen(navController: NavController) {
                 OutlinedTextField(
                     value = text,
                     onValueChange = { text = it },
+                    modifier = Modifier.weight(1f),
                     label = { Text("Enter URL") },
                 )
 
                 IconButton(onClick = {
                     text = clipboardManager.getText().toString()
                 }) {
-                    Icon(Icons.Filled.ContentPaste, contentDescription = "Copy paste URL")
+                    Icon(Icons.Filled.ContentPaste, contentDescription = "Copy paste URL",  modifier = Modifier.padding(start = 8.dp))
                 }
 
             }
@@ -201,7 +203,7 @@ fun QrGeneratorScreen(navController: NavController) {
                     }
                 }
             ) {
-                Text("Save to Gallery")
+                Text("Save to Photo Gallery")
             }
         }
     }

@@ -50,7 +50,7 @@ fun ForgotPasswordScreen(
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFF4487E2),
-                    titleContentColor = Color.White
+                    //titleContentColor = Color.White
                 )
             )
         }
@@ -60,7 +60,7 @@ fun ForgotPasswordScreen(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
-                .background(Color.White)
+                //.background(Color.White)
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
