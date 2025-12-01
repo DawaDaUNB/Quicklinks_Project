@@ -1,5 +1,6 @@
 package com.app.quicklinks.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.SortByAlpha
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
@@ -37,6 +39,7 @@ fun HistoryScreen(navController: NavController) {
     )
 
     val history by viewModel.history.collectAsState()
+    var searchText by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         viewModel.loadHistory()
@@ -59,7 +62,20 @@ fun HistoryScreen(navController: NavController) {
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
+                actions = {
+                    IconButton(onClick = { viewModel.loadHistoryAlphabetical() }) {
+                        Icon(Icons.Filled.SortByAlpha, contentDescription = "Search by Id")
+                    }
+                    IconButton(onClick = { viewModel.loadHistory() }) {
+                        Icon(Icons.Filled.DateRange, contentDescription = "Search by Date")
+                    }
+                    OutlinedTextField(
+                        value = searchText,
+                        onValueChange = { searchText = it },
+                        label = { Text("Type to Search") },
+                    )
+                },
+                    colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = androidx.compose.ui.graphics.Color(0xFF4487E2),
                     titleContentColor = androidx.compose.ui.graphics.Color.White
                 )
@@ -72,115 +88,103 @@ fun HistoryScreen(navController: NavController) {
                 .padding(padding)
                 .padding(16.dp)
         ) {
-//            Row(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(vertical = 8.dp),
-//                    horizontalArrangement = Arrangement.SpaceBetween,
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//                    IconButton(onClick = {
-//                        viewModel.loadHistoryAlphabetical()
-//                    }) {
-//                        Icon(Icons.Filled.SortByAlpha, contentDescription = "Search by Id")
-//                    }
-//
-//                    IconButton(onClick = {
-//                        viewModel.loadHistory()
-//                    }) {
-//                        Icon(Icons.Filled.DateRange, contentDescription = "Search by Date")
-//                    }
-//                }
             if (history.isEmpty()) {
                 item {
                     Text("No scans yet.")
                 }
             } else {
 
-                items(history) { scan ->
-                    (
-                            Row(
+                    items(history) { scan ->
+                        (
+
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 8.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                ) {
+                                    IconButton(onClick = {
+                                        viewModel.updateFavorite(scan, (!scan.favorite))
+                                    }) {
+                                        if (scan.favorite) {
+                                            Icon(
+                                                Icons.Filled.CheckBox,
+                                                contentDescription = "Unfavorite"
+                                            )
+                                        } else {
+                                            Icon(
+                                                Icons.Filled.CheckBoxOutlineBlank,
+                                                contentDescription = "Favorite"
+                                            )
+                                        }
+                                    }
+
+                                    Text(
+                                        scan.text,
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .clickable {
+                                            viewModel.foldUp() }
+                                    )
+
+                                    val clipboard = LocalClipboardManager.current
+
+                                    IconButton(onClick = {
+                                        clipboard.setText(AnnotatedString(scan.text))
+                                    }) {
+                                        Icon(Icons.Filled.CopyAll, contentDescription = "Copy scan")
+                                    }
+
+                                    var showDeleteDialog by remember { mutableStateOf(false) }
+
+                                    IconButton(onClick = { showDeleteDialog = true }) {
+                                        Icon(
+                                            Icons.Default.Delete,
+                                            contentDescription = "Delete scan"
+                                        )
+                                    }
+
+                                    if (showDeleteDialog) {
+                                        AlertDialog(
+                                            onDismissRequest = { showDeleteDialog = false },
+                                            title = { Text("Delete scan?") },
+                                            text = { Text("Are you sure you want to delete this scan? This action cannot be undone.") },
+                                            confirmButton = {
+                                                TextButton(onClick = {
+                                                    viewModel.deleteScan(scan)
+                                                    showDeleteDialog = false
+                                                }) {
+                                                    Text("Delete")
+                                                }
+                                            },
+                                            dismissButton = {
+                                                TextButton(onClick = { showDeleteDialog = false }) {
+                                                    Text("Cancel")
+                                                }
+                                            }
+                                        )
+                                    }
+                                })
+                        if (viewModel.fold) {
+                            Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 8.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                IconButton(onClick = {
-                                    viewModel.updateFavorite(scan, (!scan.favorite))
-                                }) {
-                                    if (scan.favorite) {
-                                        Icon(
-                                            Icons.Filled.CheckBox,
-                                            contentDescription = "Unfavorite"
-                                        )
-                                    } else {
-                                        Icon(
-                                            Icons.Filled.CheckBoxOutlineBlank,
-                                            contentDescription = "Favorite"
-                                        )
-                                    }
-                                }
 
+                                ) {
                                 Text(
-                                    scan.text,
+                                    scan.originalUrl,
                                     modifier = Modifier.weight(1f)
                                 )
-
-                                val clipboard = LocalClipboardManager.current
-
-                                IconButton(onClick = {
-                                    clipboard.setText(AnnotatedString(scan.text))
-                                }) {
-                                    Icon(Icons.Filled.CopyAll, contentDescription = "Copy scan")
-                                }
-
-                                var showDeleteDialog by remember { mutableStateOf(false) }
-
-                                IconButton(onClick = { showDeleteDialog = true }) {
-                                    Icon(Icons.Default.Delete, contentDescription = "Delete scan")
-                                }
-
-                                if (showDeleteDialog) {
-                                    AlertDialog(
-                                        onDismissRequest = { showDeleteDialog = false },
-                                        title = { Text("Delete scan?") },
-                                        text = { Text("Are you sure you want to delete this scan? This action cannot be undone.") },
-                                        confirmButton = {
-                                            TextButton(onClick = {
-                                                viewModel.deleteScan(scan)
-                                                showDeleteDialog = false
-                                            }) {
-                                                Text("Delete")
-                                            }
-                                        },
-                                        dismissButton = {
-                                            TextButton(onClick = { showDeleteDialog = false }) {
-                                                Text("Cancel")
-                                            }
-                                        }
-                                    )
-                                }
-                            })
-                    if (viewModel.fold){
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 8.dp),
-
-                            ) {
-                            Text(
-                                scan.originalUrl,
-                                modifier = Modifier.weight(1f)
-                            )
-                            Text(
-                                scan.shortcode,
-                                modifier = Modifier.weight(1f)
-                            )
+                                Text(
+                                    scan.shortcode,
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
                         }
                     }
                 }
             }
         }
     }
-}
