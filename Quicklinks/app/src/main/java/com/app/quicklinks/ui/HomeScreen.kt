@@ -44,7 +44,7 @@ fun HomeScreen(navController: NavController, loginAuth: LoginAuth) {
             .background(MaterialTheme.colorScheme.primary),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
             Text(
                 text = stringResource(R.string.app_name),
@@ -53,7 +53,7 @@ fun HomeScreen(navController: NavController, loginAuth: LoginAuth) {
                 fontWeight = FontWeight.Bold
             )
 
-        Spacer(modifier = Modifier.height(52.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
         Box(
             modifier = Modifier
@@ -101,7 +101,7 @@ fun HomeScreen(navController: NavController, loginAuth: LoginAuth) {
                     AlertDialog(
                         onDismissRequest = { showLogoutDialog = false },
                         title = { Text(stringResource(R.string.logout)) },
-                        text = { Text("Are you sure you want to log out?") },
+                        text = { Text(stringResource(R.string.logout_confirm)) },
                         confirmButton = {
                             TextButton(onClick = {
                                 showLogoutDialog = false
@@ -115,7 +115,7 @@ fun HomeScreen(navController: NavController, loginAuth: LoginAuth) {
                         },
                         dismissButton = {
                             TextButton(onClick = { showLogoutDialog = false }) {
-                                Text("Cancel")
+                                Text(stringResource(R.string.cancel))
                             }
                         }
                     )

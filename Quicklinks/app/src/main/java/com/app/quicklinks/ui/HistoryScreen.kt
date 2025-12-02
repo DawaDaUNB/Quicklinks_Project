@@ -53,19 +53,20 @@ fun HistoryScreen(navController: NavController, loginAuth: LoginAuth) {
     Scaffold(
         topBar = {
             TopAppBar(
+                navigationIcon = { IconButton(onClick = {
+                    navController.navigate("home") {
+                        popUpTo("history") { inclusive = true }
+                    }
+                }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_arrow_back),
+                        contentDescription = stringResource(R.string.back),
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }},
                 title = { Text(stringResource(R.string.history), fontSize = 32.sp) },
                 actions = {
-                    IconButton(onClick = {
-                        navController.navigate("home") {
-                            popUpTo("history") { inclusive = true }
-                        }
-                    }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_arrow_back),
-                            contentDescription = stringResource(R.string.back),
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
+
 
 
                     IconButton(onClick = { viewModel.loadHistoryAlphabetical(currentUser) }) {
@@ -110,7 +111,7 @@ fun HistoryScreen(navController: NavController, loginAuth: LoginAuth) {
                 //.padding(16.dp)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(MaterialTheme.colorScheme.primary,MaterialTheme.colorScheme.background), // Your gradient colors
+                        colors = listOf(MaterialTheme.colorScheme.secondary,MaterialTheme.colorScheme.background), // Your gradient colors
                         startY = 0f,
                         endY = Float.POSITIVE_INFINITY
                     )
@@ -186,19 +187,19 @@ fun HistoryScreen(navController: NavController, loginAuth: LoginAuth) {
                                     if (showDeleteDialog) {
                                         AlertDialog(
                                             onDismissRequest = { showDeleteDialog = false },
-                                            title = { Text("Delete scan?") },
+                                            title = { Text(stringResource(R.string.delete)) },
                                             text = { Text("Are you sure you want to delete this scan? This action cannot be undone.") },
                                             confirmButton = {
                                                 TextButton(onClick = {
                                                     viewModel.deleteScan(scan, currentUser)
                                                     showDeleteDialog = false
                                                 }) {
-                                                    Text("Delete")
+                                                    Text(stringResource(R.string.delete))
                                                 }
                                             },
                                             dismissButton = {
                                                 TextButton(onClick = { showDeleteDialog = false }) {
-                                                    Text("Cancel")
+                                                    Text(stringResource(R.string.cancel))
                                                 }
                                             }
                                         )

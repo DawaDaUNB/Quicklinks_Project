@@ -55,6 +55,7 @@ fun ShortenerScreen(navController: NavController, loginAuth: LoginAuth) {
 
     val currentUser = loginAuth.userId?: -1L
 
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -69,7 +70,7 @@ fun ShortenerScreen(navController: NavController, loginAuth: LoginAuth) {
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_arrow_back),
-                contentDescription = "Back",
+                contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onPrimary
             )
         }
@@ -77,7 +78,6 @@ fun ShortenerScreen(navController: NavController, loginAuth: LoginAuth) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = screenHeight)
                 .padding(top = 40.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -97,6 +97,7 @@ fun ShortenerScreen(navController: NavController, loginAuth: LoginAuth) {
                         MaterialTheme.colorScheme.background,
                         shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
                     )
+                    .heightIn(min = screenHeight)
             ) {
 
                 Column(

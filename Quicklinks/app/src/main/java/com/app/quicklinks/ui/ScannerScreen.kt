@@ -166,7 +166,7 @@ fun ScannerScreen(navController: NavController, loginAuth: LoginAuth) {
         } else {
             LaunchedEffect(Unit) { cameraPermissionState.launchPermissionRequest() }
             Text(
-                text = "Camera permission required to scan QR codes",
+                text = stringResource(R.string.camera_permission_request),
                 modifier = Modifier
                     .padding(padding)
                     .padding(16.dp)
