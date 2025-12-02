@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -43,14 +44,14 @@ fun ForgotPasswordScreen(
                     }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_arrow_back),
-                            contentDescription = "Back",
-                            tint = Color.White
+                            contentDescription = stringResource(R.string.back),
+                            tint = MaterialTheme.colorScheme.onSecondary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF4487E2),
-                    //titleContentColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    titleContentColor = MaterialTheme.colorScheme.onSecondary
                 )
             )
         }
@@ -60,7 +61,7 @@ fun ForgotPasswordScreen(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
-                //.background(Color.White)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -68,12 +69,12 @@ fun ForgotPasswordScreen(
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                placeholder = { Text("Email", color = Color.Gray) },
+                placeholder = { Text(stringResource(R.string.email), color = MaterialTheme.colorScheme.onSecondary) },
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_email),
                         contentDescription = null,
-                        tint = Color(0xFF4487E2)
+                        tint = MaterialTheme.colorScheme.onBackground
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -86,12 +87,12 @@ fun ForgotPasswordScreen(
             OutlinedTextField(
                 value = newPassword,
                 onValueChange = { newPassword = it },
-                placeholder = { Text("New Password", color = Color.Gray) },
+                placeholder = { Text(stringResource(R.string.new_password), color = MaterialTheme.colorScheme.onSecondary) },
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_lock),
                         contentDescription = null,
-                        tint = Color(0xFF4487E2)
+                        tint = MaterialTheme.colorScheme.onBackground
                     )
                 },
 
@@ -106,7 +107,7 @@ fun ForgotPasswordScreen(
                                 else R.drawable.ic_visibility
                             ),
                             contentDescription = if (passwordVisible) "Hide password" else "Show password",
-                            tint = Color.Gray
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
                 },
@@ -148,7 +149,7 @@ fun ForgotPasswordScreen(
                             }
                         } else {
                             successMessage = ""
-                            errorMessage = "Email not found."
+                            errorMessage = "Email not found"
                         }
                     }
                 },

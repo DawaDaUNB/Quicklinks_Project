@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -63,7 +64,7 @@ fun QrGeneratorScreen(navController: NavController) {
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            "QR Generator",
+                            stringResource(R.string.qr_generator),
                             modifier = Modifier.align(Alignment.CenterStart)
                         )
                         Spacer(Modifier.height(12.dp))
@@ -143,29 +144,29 @@ fun QrGeneratorScreen(navController: NavController) {
 
 
             Spacer(Modifier.height(30.dp))
-            Text("Foreground Color (RGB)")
+            Text(stringResource(R.string.foreground_color))
 
             var fgR by rememberSaveable { mutableIntStateOf(foregroundColor shr 16 and 0xFF) }
             var fgG by rememberSaveable { mutableIntStateOf(foregroundColor shr 8 and 0xFF) }
             var fgB by rememberSaveable { mutableIntStateOf(foregroundColor and 0xFF) }
 
-            ColorSliders("Red", fgR) { fgR = it; foregroundColor = Color.rgb(fgR, fgG, fgB) }
-            ColorSliders("Green", fgG) { fgG = it; foregroundColor = Color.rgb(fgR, fgG, fgB) }
-            ColorSliders("Blue", fgB) { fgB = it; foregroundColor = Color.rgb(fgR, fgG, fgB) }
+            ColorSliders(stringResource(R.string.red), fgR) { fgR = it; foregroundColor = Color.rgb(fgR, fgG, fgB) }
+            ColorSliders(stringResource(R.string.green), fgG) { fgG = it; foregroundColor = Color.rgb(fgR, fgG, fgB) }
+            ColorSliders(stringResource(R.string.blue), fgB) { fgB = it; foregroundColor = Color.rgb(fgR, fgG, fgB) }
 
             Spacer(Modifier.height(20.dp))
-            Text("Background Color (RGB)")
+            Text(stringResource(R.string.background_color))
 
             var bgR by rememberSaveable { mutableIntStateOf(backgroundColor shr 16 and 0xFF) }
             var bgG by rememberSaveable { mutableIntStateOf(backgroundColor shr 8 and 0xFF) }
             var bgB by rememberSaveable { mutableIntStateOf(backgroundColor and 0xFF) }
 
-            ColorSliders("Red", bgR) { bgR = it; backgroundColor = Color.rgb(bgR, bgG, bgB) }
-            ColorSliders("Green", bgG) { bgG = it; backgroundColor = Color.rgb(bgR, bgG, bgB) }
-            ColorSliders("Blue", bgB) { bgB = it; backgroundColor = Color.rgb(bgR, bgG, bgB) }
+            ColorSliders(stringResource(R.string.red), bgR) { bgR = it; backgroundColor = Color.rgb(bgR, bgG, bgB) }
+            ColorSliders(stringResource(R.string.green), bgG) { bgG = it; backgroundColor = Color.rgb(bgR, bgG, bgB) }
+            ColorSliders(stringResource(R.string.blue), bgB) { bgB = it; backgroundColor = Color.rgb(bgR, bgG, bgB) }
 
             Spacer(Modifier.height(30.dp))
-            Text("Border Size: ${borderSize.toInt()}")
+            Text(stringResource(R.string.border_size) + "${borderSize.toInt()}")
             Slider(
                 value = borderSize,
                 onValueChange = { borderSize = it },
@@ -173,15 +174,15 @@ fun QrGeneratorScreen(navController: NavController) {
             )
 
             Spacer(Modifier.height(20.dp))
-            Text("Border Color (RGB)")
+            Text(stringResource(R.string.border_color))
 
             var brR by rememberSaveable { mutableIntStateOf(borderColor shr 16 and 0xFF) }
             var brG by rememberSaveable { mutableIntStateOf(borderColor shr 8 and 0xFF) }
             var brB by rememberSaveable { mutableIntStateOf(borderColor and 0xFF) }
 
-            ColorSliders("Red", brR) { brR = it; borderColor = Color.rgb(brR, brG, brB) }
-            ColorSliders("Green", brG) { brG = it; borderColor = Color.rgb(brR, brG, brB) }
-            ColorSliders("Blue", brB) { brB = it; borderColor = Color.rgb(brR, brG, brB) }
+            ColorSliders(stringResource(R.string.red), brR) { brR = it; borderColor = Color.rgb(brR, brG, brB) }
+            ColorSliders(stringResource(R.string.green), brG) { brG = it; borderColor = Color.rgb(brR, brG, brB) }
+            ColorSliders(stringResource(R.string.blue), brB) { brB = it; borderColor = Color.rgb(brR, brG, brB) }
 
 
             Spacer(Modifier.height(20.dp))

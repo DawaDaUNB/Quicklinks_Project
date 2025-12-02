@@ -26,6 +26,8 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import androidx.camera.core.ImageProxy
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.app.quicklinks.QuicklinksApp
@@ -43,6 +45,7 @@ import java.net.URLEncoder
 @Composable
 fun ScannerScreen(navController: NavController) {
 
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     val client = remember { OkHttpClient() }
     val app = LocalContext.current.applicationContext as QuicklinksApp
     val viewModel: ScanViewModel = viewModel(
@@ -58,7 +61,7 @@ fun ScannerScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("QR Scanner", fontSize = 20.sp) },
+                title = { Text(stringResource(R.string.qr_scan), fontSize = 20.sp) },
                 navigationIcon = {
                     IconButton(onClick = {
                         navController.navigate("home") {
@@ -67,14 +70,14 @@ fun ScannerScreen(navController: NavController) {
                     }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_arrow_back),
-                            contentDescription = "Back",
-                            tint = androidx.compose.ui.graphics.Color.White
+                            contentDescription = stringResource(R.string.back),
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = androidx.compose.ui.graphics.Color(0xFF4487E2),
-                    titleContentColor = androidx.compose.ui.graphics.Color.White
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         }

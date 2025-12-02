@@ -22,7 +22,9 @@ import com.app.quicklinks.R
 import com.app.quicklinks.viewmodel.UserViewModel
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.app.quicklinks.QuicklinksApp
 import com.app.quicklinks.viewmodel.ScanViewModel
@@ -33,7 +35,7 @@ fun LoginScreen(
     navController: NavController,
     userViewModel: UserViewModel
 ) {
-
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
 
     val app = LocalContext.current.applicationContext as QuicklinksApp
     val viewModel: ScanViewModel = viewModel(
@@ -49,14 +51,14 @@ fun LoginScreen(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
             .fillMaxSize()
-            .background(Color(0xFF4487E2)),
+            .background(MaterialTheme.colorScheme.primary),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(60.dp))
 
         Text(
             text = "QuickLinks",
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onPrimary,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold
         )
@@ -66,8 +68,9 @@ fun LoginScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .heightIn(min = screenHeight)
                 .background(
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.background,
                     shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
                 )
         ) {
@@ -81,12 +84,12 @@ fun LoginScreen(
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    placeholder = { Text(text = "Email", color = Color.Gray) },
+                    placeholder = { Text(text = stringResource(R.string.email), color = MaterialTheme.colorScheme.onBackground) },
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_email),
                             contentDescription = null,
-                            tint = Color(0xFF4487E2)
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     },
                     modifier = Modifier.fillMaxWidth(),
@@ -99,12 +102,13 @@ fun LoginScreen(
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    placeholder = { Text(text = "Password", color = Color.Gray) },
+                    placeholder = { Text(text = stringResource(R.string.password), color = MaterialTheme.colorScheme.onBackground) },
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_lock),
                             contentDescription = null,
-                            tint = Color(0xFF4487E2)
+                            tint = MaterialTheme.colorScheme.onBackground
+
                         )
                     },
                     modifier = Modifier.fillMaxWidth(),
@@ -119,7 +123,7 @@ fun LoginScreen(
                                     else R.drawable.ic_visibility
                                 ),
                                 contentDescription = if (passwordVisible) "Hide password" else "Show password",
-                                tint = Color.Gray
+                                tint = MaterialTheme.colorScheme.onBackground
                             )
                         }
                     },
@@ -206,7 +210,7 @@ fun LoginScreen(
                     modifier = Modifier.padding(bottom = 24.dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Text("Don’t have an account? ")
+                    Text("Don’t have an account? ", color = MaterialTheme.colorScheme.onBackground)
                     Text(
                         "Sign Up",
                         color = Color(0xFF4487E2),

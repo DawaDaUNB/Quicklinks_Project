@@ -12,10 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.graphics.Color
 private val DarkColorScheme = darkColorScheme(
-    primary = Color(0xFF2979FF),     // Deep blue
-    secondary = Color(0xFF9C27B0),   // Muted purple
-    background = Color(0xFF121212),  // Dark gray background
-    surface = Color(0xFF1E1E1E),     // Slightly lighter gray for cards
+    primary = Color(0xFF5487E2),
+    secondary = Color(0xFF2979FF),
+    background = Color(0xFF29292A),
+    surface = Color(0xFF1E1E1E),
     onPrimary = Color.White,
     onSecondary = Color.White,
     onBackground = Color(0xFFE0E0E0),
@@ -23,13 +23,13 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color(0xFF2979FF),
-    secondary = Color(0xFF9C27B0),
+    primary = Color(0xFF5487E2),
+    secondary = Color(0xFF3D86CB),
     background = Color(0xFFF5F5F5),
     surface = Color(0xFFFFFFFF),
     onPrimary = Color.White,
-    onSecondary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
+    onSecondary = Color.Black,
+    onBackground = Color(0xFF29292A),
     onSurface = Color(0xFF1C1B1F)
 )
 
@@ -37,7 +37,7 @@ private val LightColorScheme = lightColorScheme(
 fun MyApplicationTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

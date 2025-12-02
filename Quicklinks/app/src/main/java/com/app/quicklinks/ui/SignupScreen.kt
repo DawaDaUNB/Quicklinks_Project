@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -36,15 +37,15 @@ fun SignupScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF4487E2)),
+            .background(MaterialTheme.colorScheme.secondary),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(60.dp))
 
         Icon(
             painter = painterResource(id = R.drawable.ic_arrow_back),
-            contentDescription = "Back",
-            tint = Color.White,
+            contentDescription = stringResource(R.string.back),
+            tint = MaterialTheme.colorScheme.onSecondary,
             modifier = Modifier
                 .align(Alignment.Start)
                 .padding(start = 24.dp)
@@ -56,7 +57,7 @@ fun SignupScreen(
 
         Text(
             text = "Create Account",
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onSecondary,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold
         )
@@ -67,7 +68,7 @@ fun SignupScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
                 )
         ) {
@@ -81,21 +82,21 @@ fun SignupScreen(
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    placeholder = { Text("Email", color = Color.Gray) },
+                    placeholder = { Text("Email", color = MaterialTheme.colorScheme.onPrimary) },
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_email),
                             contentDescription = null,
-                            tint = Color(0xFF4487E2)
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color.Black,
-                        unfocusedBorderColor = Color.Black,
-                        cursorColor = Color.Black
+                        focusedBorderColor = MaterialTheme.colorScheme.onPrimary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.onPrimary,
+                        cursorColor = MaterialTheme.colorScheme.onPrimary
                     )
                 )
 
@@ -105,21 +106,21 @@ fun SignupScreen(
                 OutlinedTextField(
                     value = username,
                     onValueChange = { username = it },
-                    placeholder = { Text("Username", color = Color.Gray) },
+                    placeholder = { Text("Username", color = MaterialTheme.colorScheme.onPrimary) },
                     leadingIcon = {
-//                        Icon(
-//                            painter = painterResource(id = R.drawable.ic_user),
-//                            contentDescription = null,
-//                            tint = Color(0xFF4487E2)
-//                        )
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_email),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
                     },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color.Black,
-                        unfocusedBorderColor = Color.Black,
-                        cursorColor = Color.Black
+                        focusedBorderColor = MaterialTheme.colorScheme.onPrimary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.onPrimary,
+                        cursorColor = MaterialTheme.colorScheme.onPrimary
                     )
                 )
 
@@ -128,12 +129,12 @@ fun SignupScreen(
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    placeholder = { Text("Password", color = Color.Gray) },
+                    placeholder = { Text("Password", color = MaterialTheme.colorScheme.onPrimary) },
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_lock),
                             contentDescription = null,
-                            tint = Color(0xFF4487E2)
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     },
                     trailingIcon = {
@@ -146,7 +147,7 @@ fun SignupScreen(
                                         R.drawable.ic_visibility_off
                                 ),
                                 contentDescription = "Toggle Password Visibility",
-                                tint = Color.Gray
+                                tint = MaterialTheme.colorScheme.onPrimary
                             )
                         }
                     },
@@ -158,9 +159,9 @@ fun SignupScreen(
                         PasswordVisualTransformation(),
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color.Black,
-                        unfocusedBorderColor = Color.Black,
-                        cursorColor = Color.Black
+                        focusedBorderColor = MaterialTheme.colorScheme.onPrimary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.onPrimary,
+                        cursorColor = MaterialTheme.colorScheme.onPrimary
                     )
                 )
 
@@ -169,12 +170,12 @@ fun SignupScreen(
                 OutlinedTextField(
                     value = confirmPassword,
                     onValueChange = { confirmPassword = it },
-                    placeholder = { Text("Confirm Password", color = Color.Gray) },
+                    placeholder = { Text("Confirm Password", color = MaterialTheme.colorScheme.onPrimary) },
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_lock),
                             contentDescription = null,
-                            tint = Color(0xFF4487E2)
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     },
                     modifier = Modifier.fillMaxWidth(),
@@ -182,9 +183,9 @@ fun SignupScreen(
                     visualTransformation = PasswordVisualTransformation(),
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color.Black,
-                        unfocusedBorderColor = Color.Black,
-                        cursorColor = Color.Black
+                        focusedBorderColor = MaterialTheme.colorScheme.onPrimary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.onPrimary,
+                        cursorColor = MaterialTheme.colorScheme.onPrimary
                     )
                 )
 
@@ -225,9 +226,9 @@ fun SignupScreen(
                         .fillMaxWidth()
                         .height(55.dp),
                     shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4487E2))
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 ) {
-                    Text("Create Account", color = Color.White, fontSize = 18.sp)
+                    Text("Create Account", color = MaterialTheme.colorScheme.onSecondary, fontSize = 18.sp)
                 }
             }
         }

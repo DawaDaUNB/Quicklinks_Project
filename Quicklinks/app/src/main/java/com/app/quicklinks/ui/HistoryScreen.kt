@@ -20,8 +20,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,13 +37,13 @@ import com.app.quicklinks.viewmodel.ScanViewModelFactory
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen(navController: NavController) {
-
+    //val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     val app = LocalContext.current.applicationContext as QuicklinksApp
     val viewModel: ScanViewModel = viewModel(
         factory = ScanViewModelFactory(app.repository)
     )
     val history by viewModel.history.collectAsState()
-    var searchText by rememberSaveable { mutableStateOf("") }
+  //  var searchText by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         viewModel.loadHistory()
@@ -50,7 +52,7 @@ fun HistoryScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("History", fontSize = 20.sp) },
+                title = { Text(stringResource(R.string.history), fontSize = 32.sp) },
                 actions = {
                     IconButton(onClick = {
                         navController.navigate("home") {
@@ -59,15 +61,17 @@ fun HistoryScreen(navController: NavController) {
                     }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_arrow_back),
-                            contentDescription = "Back",
-                            tint = androidx.compose.ui.graphics.Color.White
+                            contentDescription = stringResource(R.string.back),
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
+
+
                     IconButton(onClick = { viewModel.loadHistoryAlphabetical() }) {
                         Icon(
                             Icons.Filled.SortByAlpha,
                             contentDescription = "Search by Id",
-                            tint = androidx.compose.ui.graphics.Color.White
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
 
                     }
@@ -75,25 +79,25 @@ fun HistoryScreen(navController: NavController) {
                         Icon(
                             Icons.Filled.DateRange,
                             contentDescription = "Search by Date",
-                            tint = androidx.compose.ui.graphics.Color.White
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
-                    OutlinedTextField(
-                        value = searchText,
-                        onValueChange = { searchText = it },
-                        label = { Text("Type to Search") },
-                    )
-                    IconButton(onClick = { viewModel.searchHistory(searchText) }) {
-                        Icon(
-                            Icons.Filled.Search,
-                            contentDescription = "Search by Name",
-                            tint = androidx.compose.ui.graphics.Color.White
-                        )
-                    }
+//                    OutlinedTextField(
+//                        value = searchText,
+//                        onValueChange = { searchText = it },
+//                        label = { Text("Type to Search") },
+//                    )
+//                    IconButton(onClick = { viewModel.searchHistory(searchText) }) {
+//                        Icon(
+//                            Icons.Filled.Search,
+//                            contentDescription = "Search by Name",
+//                            tint = MaterialTheme.colorScheme.onPrimary
+//                        )
+//                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = androidx.compose.ui.graphics.Color(0xFF4487E2),
-                    titleContentColor = androidx.compose.ui.graphics.Color.White
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         }

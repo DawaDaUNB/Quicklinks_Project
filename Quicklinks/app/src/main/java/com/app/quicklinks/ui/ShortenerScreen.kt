@@ -4,7 +4,9 @@ import androidx.core.net.toUri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentPaste
 import androidx.compose.material3.*
@@ -14,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
@@ -33,7 +36,7 @@ import java.net.URLEncoder
 
 @Composable
 fun ShortenerScreen(navController: NavController) {
-
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     val clipboardManager = LocalClipboardManager.current
     var urlText by rememberSaveable { mutableStateOf("") }
     var saveUrl by rememberSaveable { mutableStateOf("") }
@@ -50,7 +53,9 @@ fun ShortenerScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF5487E2))
+            .verticalScroll(rememberScrollState())
+            .heightIn(min = screenHeight)
+            .background(MaterialTheme.colorScheme.primary)
     ) {
         IconButton(
             onClick = { navController.popBackStack() },
@@ -61,7 +66,7 @@ fun ShortenerScreen(navController: NavController) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_arrow_back),
                 contentDescription = "Back",
-                tint = Color.White
+                tint = MaterialTheme.colorScheme.onPrimary
             )
         }
 
@@ -74,7 +79,7 @@ fun ShortenerScreen(navController: NavController) {
 
             Text(
                 text = "Shorten URL",
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onPrimary,
                 style = MaterialTheme.typography.headlineLarge
             )
 
@@ -84,7 +89,7 @@ fun ShortenerScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
-                        Color.White,
+                        MaterialTheme.colorScheme.background,
                         shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
                     )
             ) {
@@ -138,8 +143,8 @@ fun ShortenerScreen(navController: NavController) {
                         modifier = Modifier.fillMaxWidth(),
                         enabled = !isLoading && urlText != "",
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF4487E2),
-                            contentColor = Color.White
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
                         )
                     ) {
                         Text(if (isLoading) "Shortening..." else "Shorten URL")
@@ -151,7 +156,8 @@ fun ShortenerScreen(navController: NavController) {
 
                         Text(
                             text = "Shortened URL:",
-                            style = MaterialTheme.typography.titleMedium
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.primary
                         )
 
                         Text(
@@ -170,7 +176,11 @@ fun ShortenerScreen(navController: NavController) {
                             ) {
                                 Button(onClick = {
                                     clipboardManager.setText(AnnotatedString(short))
-                                }) {
+                                }, colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary,
+                                    contentColor = MaterialTheme.colorScheme.onPrimary
+                                )
+                                ) {
                                     Text("Copy")
                                 }
 
@@ -182,7 +192,10 @@ fun ShortenerScreen(navController: NavController) {
                                             short
                                         )
                                     }
-                                }) {
+                                }, colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary,
+                                    contentColor = MaterialTheme.colorScheme.onPrimary
+                                )) {
                                     Text("Save")
                                 }
                                 Button(onClick = {
@@ -192,7 +205,12 @@ fun ShortenerScreen(navController: NavController) {
                                             short.toUri()
                                         )
                                     )
-                                }) {
+                                }, colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary,
+                                    contentColor = MaterialTheme.colorScheme.onPrimary
+                                )
+                                ) {
+
                                     Text("Open")
                                 }
                             }

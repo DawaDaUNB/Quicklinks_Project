@@ -3,6 +3,7 @@ package com.app.quicklinks.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -24,106 +25,111 @@ import com.app.quicklinks.NavRoutes
 import com.app.quicklinks.R
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 
 
 @Composable
 fun HomeScreen(navController: NavController) {
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
-            .fillMaxSize(),
-       //     .background(Color(0xFF4487E2)),
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.primary),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(40.dp))
 
-        var showLogoutDialog by remember { mutableStateOf(false) }
-
-        Icon(
-            painter = painterResource(id = R.drawable.ic_arrow_back),
-            contentDescription = "Back",
-            //tint = Color.White,
-            modifier = Modifier
-                .align(Alignment.Start)
-                .padding(start = 26.dp)
-                .clickable {
-                    showLogoutDialog = true
-                }
-                .size(28.dp)
-        )
-
-        if (showLogoutDialog) {
-            AlertDialog(
-                onDismissRequest = { showLogoutDialog = false },
-                title = { Text("Log Out") },
-                text = { Text("Are you sure you want to log out?") },
-                confirmButton = {
-                    TextButton(onClick = {
-                        showLogoutDialog = false
-                        navController.navigate(NavRoutes.Login.route) {
-                            popUpTo(NavRoutes.Home.route) { inclusive = true }
-                        }
-                    }) {
-                        Text("Log out")
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = { showLogoutDialog = false }) {
-                        Text("Cancel")
-                    }
-                }
+            Text(
+                text = stringResource(R.string.app_name),
+                color = MaterialTheme.colorScheme.onPrimary,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold
             )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = "Home",
-            //  color = Color.White,
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold
-        )
 
         Spacer(modifier = Modifier.height(52.dp))
 
         Box(
             modifier = Modifier
                 .fillMaxSize()
-//                .background(
-//                    color = Color.White,
-//                    shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
-//                )
+                .background(
+                    color = MaterialTheme.colorScheme.background,
+                    shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
+                )
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .heightIn(min = screenHeight)
                     .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 DashboardCard(
-                    title = "Scan QR Code",
+                    title = stringResource(R.string.qr_scan),
                     icon = Icons.Default.QrCodeScanner,
                     onClick = { navController.navigate(NavRoutes.Scanner.route) }
                 )
 
                 DashboardCard(
-                    title = "Shorten URL",
+                    title = stringResource(R.string.shorten_url),
                     icon = Icons.Default.Link,
                     onClick = { navController.navigate(NavRoutes.Shortener.route) }
                 )
 
                 DashboardCard(
-                    title = "Generate QR Code",
+                    title = stringResource(R.string.qr_generator),
                     icon = Icons.Default.QrCode2,
                     onClick = { navController.navigate(NavRoutes.Generator.route) }
                 )
 
                 DashboardCard(
-                    title = "View History",
+                    title = stringResource(R.string.history),
                     icon = Icons.Default.History,
                     onClick = { navController.navigate(NavRoutes.History.route) }
                 )
             }
+
+            var showLogoutDialog by remember { mutableStateOf(false) }
+
+            if (showLogoutDialog) {
+                AlertDialog(
+                    onDismissRequest = { showLogoutDialog = false },
+                    title = { Text(stringResource(R.string.logout)) },
+                    text = { Text("Are you sure you want to log out?") },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            showLogoutDialog = false
+                            navController.navigate(NavRoutes.Login.route) {
+                                popUpTo(NavRoutes.Home.route) { inclusive = true }
+                            }
+                        }) {
+                            Text(stringResource(R.string.logout))
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showLogoutDialog = false }) {
+                            Text("Cancel")
+                        }
+                    }
+                )
+            }
+            Row(
+                modifier = Modifier.padding(bottom = 24.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    "Logout",
+                    color = Color(0xFF4487E2),
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.clickable {
+                        showLogoutDialog = true
+                    }
+                )
+            }
+
         }
     }
 }
@@ -131,7 +137,7 @@ fun HomeScreen(navController: NavController) {
 @Composable
 fun DashboardCard(
     title: String,
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     onClick: () -> Unit
 ) {
     Card(
