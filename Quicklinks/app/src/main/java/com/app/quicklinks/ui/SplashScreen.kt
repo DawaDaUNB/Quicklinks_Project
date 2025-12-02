@@ -20,18 +20,18 @@ import kotlinx.coroutines.delay
 fun SplashScreen(onFinished: () -> Unit) {
 
     var animateStart by remember { mutableStateOf(false) }
-    var showBlueLogo by remember { mutableStateOf(true) }
+  //  var showBlueLogo by remember { mutableStateOf(true) }
 
     val backgroundColor by animateColorAsState(
         targetValue = if (animateStart) Color.White else Color(0xFF4487E2),
         animationSpec = tween(durationMillis = 800),
         label = "background"
     )
-    val logoTint by animateColorAsState(
-        targetValue = if (animateStart) Color.Unspecified else Color.White,
-        animationSpec = tween(800),
-        label = "tint"
-    )
+//    val logoTint by animateColorAsState(
+//        targetValue = if (animateStart) Color.Unspecified else Color.White,
+//        animationSpec = tween(800),
+//        label = "tint"
+//    )
     val scale by animateFloatAsState(
         targetValue = if (animateStart) 1f else 0.7f,
         animationSpec = tween(

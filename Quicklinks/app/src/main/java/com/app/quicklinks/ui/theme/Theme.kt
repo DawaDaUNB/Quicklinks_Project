@@ -1,6 +1,5 @@
 package com.app.quicklinks.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -19,7 +18,8 @@ private val DarkColorScheme = darkColorScheme(
     onPrimary = Color.White,
     onSecondary = Color(0xFF538AD3),
     onBackground = Color(0xFFE0E0E0),
-    onSurface = Color(0xFFE0E0E0)
+    onSurface = Color(0xFFE0E0E0),
+    onTertiary = Color(0xFF91AAE1)
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -30,13 +30,13 @@ private val LightColorScheme = lightColorScheme(
     onPrimary = Color.White,
     onSecondary = Color(0xFF2E58A1),
     onBackground = Color(0xFF29292A),
-    onSurface = Color(0xFF1C1B1F)
+    onSurface = Color(0xFF1C1B1F),
+    onTertiary = Color(0xFF91AAE1)
 )
 
 @Composable
 fun MyApplicationTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {

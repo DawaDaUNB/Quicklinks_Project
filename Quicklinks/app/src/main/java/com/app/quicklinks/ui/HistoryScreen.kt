@@ -172,7 +172,7 @@ fun HistoryScreen(navController: NavController, loginAuth: LoginAuth) {
                                     IconButton(onClick = {
                                         clipboard.setText(AnnotatedString(scan.shortcode))
                                     }) {
-                                        Icon(Icons.Filled.CopyAll, contentDescription = "Copy scan")
+                                        Icon(Icons.Filled.CopyAll, contentDescription = stringResource(R.string.copy))
                                     }
 
                                     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -180,7 +180,7 @@ fun HistoryScreen(navController: NavController, loginAuth: LoginAuth) {
                                     IconButton(onClick = { showDeleteDialog = true }) {
                                         Icon(
                                             Icons.Default.Delete,
-                                            contentDescription = "Delete scan"
+                                            contentDescription = stringResource(R.string.delete)
                                         )
                                     }
 

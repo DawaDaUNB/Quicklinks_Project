@@ -1,6 +1,5 @@
 package com.app.quicklinks.ui
 
-import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -63,7 +62,6 @@ fun HomeScreen(navController: NavController, loginAuth: LoginAuth) {
                     shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
                 )
         ) {
-            //if (isLandscape) {}
             Column(
                 modifier = Modifier
                     .fillMaxSize()

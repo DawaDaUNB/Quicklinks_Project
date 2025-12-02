@@ -46,6 +46,6 @@
     <string name="new_name">Enter new name</string>
     <string name="camera_permission_request">QR Scanner requires permission to use the device\'s camera</string>
 
-
-
+    <string name="favorite">Favorite</string>
+    <string name="unfavorite">Unfavorite</string>
 </resources>

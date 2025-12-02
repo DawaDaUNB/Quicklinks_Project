@@ -24,12 +24,11 @@ import androidx.navigation.NavController
 import com.app.quicklinks.R
 import com.app.quicklinks.utils.generateQrBitmap
 import com.app.quicklinks.utils.saveQrToGallery
-import com.app.quicklinks.viewmodel.LoginAuth
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QrGeneratorScreen(navController: NavController, loginAuth: LoginAuth) {
+fun QrGeneratorScreen(navController: NavController) {
     val context = LocalContext.current
 
     var text by rememberSaveable { mutableStateOf("") }
@@ -126,8 +125,9 @@ fun QrGeneratorScreen(navController: NavController, loginAuth: LoginAuth) {
                     value = text,
                     onValueChange = { text = it },
                     modifier = Modifier.weight(1f),
-                    label = { Text("Enter URL") },
+                    label = { Text(stringResource(R.string.enter)) },
                 )
+
 
                 IconButton(onClick = {
                     text = clipboardManager.getText().toString()
@@ -217,6 +217,11 @@ fun ColorSliders(label: String, value: Int, onValueChange: (Int) -> Unit) {
     Slider(
         value = value.toFloat(),
         onValueChange = { onValueChange(it.toInt()) },
+        colors = SliderDefaults.colors(
+            thumbColor = MaterialTheme.colorScheme.primary,
+            activeTrackColor = MaterialTheme.colorScheme.primary,
+            inactiveTrackColor = MaterialTheme.colorScheme.onTertiary
+        ),
         valueRange = 0f..255f
     )
 }

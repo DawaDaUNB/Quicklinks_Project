@@ -85,6 +85,6 @@ fun AppNavigation(
         composable(NavRoutes.Scanner.route) { ScannerScreen(navController, loginAuth) }
         composable(NavRoutes.Shortener.route) { ShortenerScreen(navController, loginAuth) }
         composable(NavRoutes.History.route) { HistoryScreen(navController, loginAuth) }
-        composable(NavRoutes.Generator.route) { QrGeneratorScreen(navController, loginAuth) }
+        composable(NavRoutes.Generator.route) { QrGeneratorScreen(navController) }
     }
 }
