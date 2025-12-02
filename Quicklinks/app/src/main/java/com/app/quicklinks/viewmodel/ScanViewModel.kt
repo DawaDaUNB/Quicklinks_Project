@@ -73,19 +73,21 @@ class ScanViewModel(private val repo: ScanRepository) : ViewModel() {
         }
     }
 
-    fun updateName(scan: Scan,newName: String) {
+    fun updateName(scan: Scan,newName: String, uId: Long) {
         if(newName != "") {
             viewModelScope.launch {
                 repo.updateScanName(scan.id, newName)
-                //loadHistory()
-                newest = true;
+                newest = true
+                loadHistory(uId)
             }
         }
     }
 
-    fun updateFavorite(scan: Scan, favorite: Boolean) {
+    fun updateFavorite(scan: Scan, favorite: Boolean, uId: Long) {
         viewModelScope.launch {
             repo.updateScanFavorite(scan.id,favorite)
+            newest = true
+            loadHistory(uId)
         }
     }
 

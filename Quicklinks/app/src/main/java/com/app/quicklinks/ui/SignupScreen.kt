@@ -19,10 +19,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.app.quicklinks.R
+import com.app.quicklinks.viewmodel.LoginAuth
 import com.app.quicklinks.viewmodel.UserViewModel
 
 @Composable
 fun SignupScreen(
+    loginAuth: LoginAuth,
     navController: NavController,
     userViewModel: UserViewModel
 ) {
@@ -213,8 +215,15 @@ fun SignupScreen(
                         } else {
                             userViewModel.registerUser(email, username, password) { success ->
                                 if (success) {
-                                    navController.navigate("home") {
-                                        popUpTo("signup") { inclusive = true }
+                                    userViewModel.getUserId(email, password) { userId ->
+                                        if (userId != null) {
+                                            loginAuth.login(userId)
+                                            navController.navigate("home") {
+                                                popUpTo("signup") { inclusive = true }
+                                            }
+                                        } else {
+                                            errorMessage = "Error Logging In"
+                                        }
                                     }
                                 } else {
                                     errorMessage = "A user with this email already exists."

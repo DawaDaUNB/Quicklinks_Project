@@ -142,7 +142,7 @@ fun HistoryScreen(navController: NavController, loginAuth: LoginAuth) {
                                     verticalAlignment = Alignment.CenterVertically,
                                 ) {
                                     IconButton(onClick = {
-                                        viewModel.updateFavorite(scan, (!scan.favorite))
+                                        viewModel.updateFavorite(scan, (!scan.favorite), currentUser)
                                     }) {
                                         if (scan.favorite) {
                                             Icon(
@@ -227,7 +227,8 @@ fun HistoryScreen(navController: NavController, loginAuth: LoginAuth) {
                                             Button(onClick = {
                                                 viewModel.updateName(
                                                     scan,
-                                                    newName
+                                                    newName,
+                                                    currentUser
                                                 ); editName = !editName
                                             }) {
                                                 Icon(

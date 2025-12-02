@@ -183,9 +183,7 @@ fun LoginScreen(
                                         loginError = "Error Logging In"
                                     }
                                 }
-//                                navController.navigate("home") {
-//                                    popUpTo("login") { inclusive = true }
-//                                }
+//
                             } else {
                                 loginError = "Invalid email or password"
                             }

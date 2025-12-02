@@ -74,7 +74,8 @@ fun AppNavigation(
         composable("signup") {
             SignupScreen(
                 navController = navController,
-                userViewModel = userViewModel
+                userViewModel = userViewModel,
+                loginAuth = loginAuth
             )
         }
         composable("forgotPassword") {
