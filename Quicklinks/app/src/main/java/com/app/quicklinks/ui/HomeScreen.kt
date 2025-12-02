@@ -34,8 +34,8 @@ import com.app.quicklinks.viewmodel.LoginAuth
 @Composable
 fun HomeScreen(navController: NavController, loginAuth: LoginAuth) {
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-    val configuration = LocalConfiguration.current
-    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+//    val configuration = LocalConfiguration.current
+//    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     Column(
         modifier = Modifier

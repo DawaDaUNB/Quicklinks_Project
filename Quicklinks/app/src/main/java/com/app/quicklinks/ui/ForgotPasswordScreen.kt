@@ -69,12 +69,12 @@ fun ForgotPasswordScreen(
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                placeholder = { Text(stringResource(R.string.email), color = MaterialTheme.colorScheme.onSecondary) },
+                placeholder = { Text(stringResource(R.string.email), color = MaterialTheme.colorScheme.onBackground) },
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_email),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onBackground
+                        tint = MaterialTheme.colorScheme.onSecondary
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -87,12 +87,12 @@ fun ForgotPasswordScreen(
             OutlinedTextField(
                 value = newPassword,
                 onValueChange = { newPassword = it },
-                placeholder = { Text(stringResource(R.string.new_password), color = MaterialTheme.colorScheme.onSecondary) },
+                placeholder = { Text(stringResource(R.string.new_password), color = MaterialTheme.colorScheme.onBackground) },
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_lock),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onBackground
+                        tint = MaterialTheme.colorScheme.onSecondary
                     )
                 },
 
@@ -107,7 +107,7 @@ fun ForgotPasswordScreen(
                                 else R.drawable.ic_visibility
                             ),
                             contentDescription = if (passwordVisible) "Hide password" else "Show password",
-                            tint = MaterialTheme.colorScheme.onBackground
+                            tint = MaterialTheme.colorScheme.onSecondary
                         )
                     }
                 },
