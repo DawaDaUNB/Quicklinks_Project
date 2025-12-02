@@ -1,5 +1,6 @@
 package com.app.quicklinks.ui
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -33,6 +34,8 @@ import androidx.compose.ui.res.stringResource
 @Composable
 fun HomeScreen(navController: NavController) {
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     Column(
         modifier = Modifier
@@ -60,6 +63,7 @@ fun HomeScreen(navController: NavController) {
                     shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
                 )
         ) {
+            //if (isLandscape) {}
             Column(
                 modifier = Modifier
                     .fillMaxSize()

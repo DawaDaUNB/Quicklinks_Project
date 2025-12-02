@@ -100,8 +100,8 @@ fun QrGeneratorScreen(navController: NavController) {
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-//                    containerColor = androidx.compose.ui.graphics.Color(0xFF4487E2),
-//                    titleContentColor = androidx.compose.ui.graphics.Color.White
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         }
@@ -136,6 +136,7 @@ fun QrGeneratorScreen(navController: NavController) {
                     Icon(
                         Icons.Filled.ContentPaste,
                         contentDescription = "Copy paste URL",
+                        tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.padding(start = 8.dp)
                     )
                 }

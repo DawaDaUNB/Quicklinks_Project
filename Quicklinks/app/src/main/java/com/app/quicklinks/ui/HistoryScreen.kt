@@ -1,6 +1,7 @@
 package com.app.quicklinks.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,6 +20,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -105,8 +107,15 @@ fun HistoryScreen(navController: NavController) {
 
         LazyColumn(
             modifier = Modifier
-                .padding(padding)
-                .padding(16.dp)
+                //.padding(padding)
+                //.padding(16.dp)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(MaterialTheme.colorScheme.primary,MaterialTheme.colorScheme.background), // Your gradient colors
+                        startY = 0f,
+                        endY = Float.POSITIVE_INFINITY
+                    )
+                ),
         ) {
             if (history.isEmpty()) {
                 item {

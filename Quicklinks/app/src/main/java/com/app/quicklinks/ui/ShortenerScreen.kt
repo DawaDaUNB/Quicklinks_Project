@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -121,6 +122,7 @@ fun ShortenerScreen(navController: NavController) {
                             Icon(
                                 Icons.Filled.ContentPaste,
                                 contentDescription = "Copy paste URL",
+                                tint = MaterialTheme.colorScheme.onBackground,
                                 modifier = Modifier.padding(start = 8.dp)
                             )
                         }
@@ -155,9 +157,9 @@ fun ShortenerScreen(navController: NavController) {
                         Spacer(modifier = Modifier.height(10.dp))
 
                         Text(
-                            text = "Shortened URL:",
+                            text = stringResource(R.string.shortened),
                             style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.onBackground
                         )
 
                         Text(

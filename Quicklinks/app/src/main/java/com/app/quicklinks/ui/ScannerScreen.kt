@@ -45,7 +45,7 @@ import java.net.URLEncoder
 @Composable
 fun ScannerScreen(navController: NavController) {
 
-    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+    //val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     val client = remember { OkHttpClient() }
     val app = LocalContext.current.applicationContext as QuicklinksApp
     val viewModel: ScanViewModel = viewModel(
@@ -61,7 +61,7 @@ fun ScannerScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.qr_scan), fontSize = 20.sp) },
+                title = { Text(stringResource(R.string.qr_scan), fontSize = 32.sp) },
                 navigationIcon = {
                     IconButton(onClick = {
                         navController.navigate("home") {

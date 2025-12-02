@@ -70,7 +70,8 @@ class ScanViewModel(private val repo: ScanRepository) : ViewModel() {
     fun deleteScan(scan: Scan) {
         viewModelScope.launch {
             repo.deleteScan(scan)
-            loadHistory()
+            newest = true;
+            //loadHistory()
         }
     }
 
@@ -78,7 +79,8 @@ class ScanViewModel(private val repo: ScanRepository) : ViewModel() {
         if(newName != "") {
             viewModelScope.launch {
                 repo.updateScanName(scan.id, newName)
-                loadHistory()
+                //loadHistory()
+                newest = true;
             }
         }
     }
@@ -86,7 +88,6 @@ class ScanViewModel(private val repo: ScanRepository) : ViewModel() {
     fun updateFavorite(scan: Scan, favorite: Boolean) {
         viewModelScope.launch {
             repo.updateScanFavorite(scan.id,favorite)
-            loadHistory()
         }
     }
 

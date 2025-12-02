@@ -37,7 +37,7 @@ fun SignupScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.secondary),
+            .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(60.dp))
@@ -45,7 +45,7 @@ fun SignupScreen(
         Icon(
             painter = painterResource(id = R.drawable.ic_arrow_back),
             contentDescription = stringResource(R.string.back),
-            tint = MaterialTheme.colorScheme.onSecondary,
+            tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .align(Alignment.Start)
                 .padding(start = 24.dp)
@@ -57,7 +57,7 @@ fun SignupScreen(
 
         Text(
             text = "Create Account",
-            color = MaterialTheme.colorScheme.onSecondary,
+            color = MaterialTheme.colorScheme.onBackground,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold
         )
@@ -82,7 +82,7 @@ fun SignupScreen(
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    placeholder = { Text("Email", color = MaterialTheme.colorScheme.onPrimary) },
+                    placeholder = { Text(stringResource(R.string.email), color = MaterialTheme.colorScheme.onPrimary) },
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_email),
@@ -106,7 +106,7 @@ fun SignupScreen(
                 OutlinedTextField(
                     value = username,
                     onValueChange = { username = it },
-                    placeholder = { Text("Username", color = MaterialTheme.colorScheme.onPrimary) },
+                    placeholder = { Text(stringResource(R.string.username), color = MaterialTheme.colorScheme.onPrimary) },
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_email),
@@ -129,7 +129,7 @@ fun SignupScreen(
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    placeholder = { Text("Password", color = MaterialTheme.colorScheme.onPrimary) },
+                    placeholder = { Text(stringResource(R.string.password), color = MaterialTheme.colorScheme.onPrimary) },
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_lock),
@@ -226,9 +226,9 @@ fun SignupScreen(
                         .fillMaxWidth()
                         .height(55.dp),
                     shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.background)
                 ) {
-                    Text("Create Account", color = MaterialTheme.colorScheme.onSecondary, fontSize = 18.sp)
+                    Text(stringResource(R.string.signup), color = MaterialTheme.colorScheme.onBackground, fontSize = 18.sp)
                 }
             }
         }
