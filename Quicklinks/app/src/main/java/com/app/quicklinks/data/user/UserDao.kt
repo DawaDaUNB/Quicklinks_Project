@@ -24,6 +24,9 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE email = :emailOrUsername AND password = :password OR username = :emailOrUsername AND password = :password LIMIT 1")
     suspend fun login(emailOrUsername: String, password: String): UserEntity?
 
+    @Query("SELECT id FROM users WHERE email = :emailOrUsername AND password = :password OR username = :emailOrUsername AND password = :password LIMIT 1")
+    suspend fun getID(emailOrUsername: String, password: String): Long?
+
     @Query("SELECT * FROM users WHERE username = :username AND password = :password LIMIT 1")
     suspend fun loginByUsername(username: String, password: String): UserEntity?
 

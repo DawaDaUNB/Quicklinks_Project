@@ -1,6 +1,7 @@
 package com.app.quicklinks
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -20,7 +21,8 @@ import com.app.quicklinks.viewmodel.UserViewModelFactory
 import com.app.quicklinks.ui.theme.MyApplicationTheme
 import com.app.quicklinks.viewmodel.LoginAuth
 class MainActivity : ComponentActivity() {
-    //val loginAuth: LoginAuth by viewModels()
+
+    private val loginAuth: LoginAuth by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +41,7 @@ class MainActivity : ComponentActivity() {
                     )
                 )
 
-                AppNavigation(navController, userViewModel)
+                AppNavigation(navController, userViewModel, loginAuth)
             }
         }
     }
@@ -48,7 +50,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppNavigation(
     navController: NavHostController,
-    userViewModel: UserViewModel
+    userViewModel: UserViewModel,
+    loginAuth: LoginAuth
 ) {
     NavHost(navController = navController, startDestination = "splash") {
         composable("splash") {
@@ -64,22 +67,24 @@ fun AppNavigation(
         composable(NavRoutes.Login.route) {
             LoginScreen(
                 navController = navController,
-                userViewModel = userViewModel
+                userViewModel = userViewModel,
+                loginAuth = loginAuth
             )
         }
         composable("signup") {
             SignupScreen(
                 navController = navController,
-                userViewModel = userViewModel
+                userViewModel = userViewModel,
+                loginAuth = loginAuth
             )
         }
         composable("forgotPassword") {
             ForgotPasswordScreen(navController, userViewModel)
         }
-        composable(NavRoutes.Home.route) { HomeScreen(navController) }
-        composable(NavRoutes.Scanner.route) { ScannerScreen(navController) }
-        composable(NavRoutes.Shortener.route) { ShortenerScreen(navController) }
-        composable(NavRoutes.History.route) { HistoryScreen(navController) }
+        composable(NavRoutes.Home.route) { HomeScreen(navController, loginAuth) }
+        composable(NavRoutes.Scanner.route) { ScannerScreen(navController, loginAuth) }
+        composable(NavRoutes.Shortener.route) { ShortenerScreen(navController, loginAuth) }
+        composable(NavRoutes.History.route) { HistoryScreen(navController, loginAuth) }
         composable(NavRoutes.Generator.route) { QrGeneratorScreen(navController) }
     }
 }

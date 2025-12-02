@@ -2,7 +2,6 @@ package com.app.quicklinks.ui
 
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.provider.Settings.Global.getString
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -21,7 +20,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.app.quicklinks.R
 import com.app.quicklinks.utils.generateQrBitmap
@@ -127,8 +125,9 @@ fun QrGeneratorScreen(navController: NavController) {
                     value = text,
                     onValueChange = { text = it },
                     modifier = Modifier.weight(1f),
-                    label = { Text("Enter URL") },
+                    label = { Text(stringResource(R.string.enter)) },
                 )
+
 
                 IconButton(onClick = {
                     text = clipboardManager.getText().toString()
@@ -218,6 +217,11 @@ fun ColorSliders(label: String, value: Int, onValueChange: (Int) -> Unit) {
     Slider(
         value = value.toFloat(),
         onValueChange = { onValueChange(it.toInt()) },
+        colors = SliderDefaults.colors(
+            thumbColor = MaterialTheme.colorScheme.primary,
+            activeTrackColor = MaterialTheme.colorScheme.primary,
+            inactiveTrackColor = MaterialTheme.colorScheme.onTertiary
+        ),
         valueRange = 0f..255f
     )
 }

@@ -1,6 +1,5 @@
 package com.app.quicklinks.ui
 
-import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,7 +16,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,13 +27,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import com.app.quicklinks.viewmodel.LoginAuth
 
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, loginAuth: LoginAuth) {
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-    val configuration = LocalConfiguration.current
-    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+//    val configuration = LocalConfiguration.current
+//    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     Column(
         modifier = Modifier
@@ -53,7 +52,7 @@ fun HomeScreen(navController: NavController) {
                 fontWeight = FontWeight.Bold
             )
 
-        Spacer(modifier = Modifier.height(52.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
         Box(
             modifier = Modifier
@@ -63,7 +62,6 @@ fun HomeScreen(navController: NavController) {
                     shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
                 )
         ) {
-            //if (isLandscape) {}
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -94,46 +92,50 @@ fun HomeScreen(navController: NavController) {
                     icon = Icons.Default.History,
                     onClick = { navController.navigate(NavRoutes.History.route) }
                 )
-            }
 
-            var showLogoutDialog by remember { mutableStateOf(false) }
+                var showLogoutDialog by remember { mutableStateOf(false) }
 
-            if (showLogoutDialog) {
-                AlertDialog(
-                    onDismissRequest = { showLogoutDialog = false },
-                    title = { Text(stringResource(R.string.logout)) },
-                    text = { Text("Are you sure you want to log out?") },
-                    confirmButton = {
-                        TextButton(onClick = {
-                            showLogoutDialog = false
-                            navController.navigate(NavRoutes.Login.route) {
-                                popUpTo(NavRoutes.Home.route) { inclusive = true }
+                if (showLogoutDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showLogoutDialog = false },
+                        title = { Text(stringResource(R.string.logout)) },
+                        text = { Text(stringResource(R.string.logout_confirm)) },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                showLogoutDialog = false
+                                loginAuth.logout()
+                                navController.navigate(NavRoutes.Login.route) {
+                                    popUpTo(NavRoutes.Home.route) { inclusive = true }
+                                }
+                            }) {
+                                Text(stringResource(R.string.logout))
                             }
-                        }) {
-                            Text(stringResource(R.string.logout))
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showLogoutDialog = false }) {
+                                Text(stringResource(R.string.cancel))
+                            }
                         }
-                    },
-                    dismissButton = {
-                        TextButton(onClick = { showLogoutDialog = false }) {
-                            Text("Cancel")
-                        }
-                    }
-                )
-            }
-            Row(
-                modifier = Modifier.padding(bottom = 24.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    "Logout",
-                    color = Color(0xFF4487E2),
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.clickable {
-                        showLogoutDialog = true
-                    }
-                )
-            }
+                    )
+                }
 
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Row(
+                    modifier = Modifier.padding(bottom = 24.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        "Logout",
+                        color = Color(0xFF4487E2),
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.clickable {
+                            showLogoutDialog = true
+                        }
+                    )
+                }
+
+            }
         }
     }
 }

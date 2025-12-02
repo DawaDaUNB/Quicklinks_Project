@@ -27,6 +27,13 @@ class UserViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
+    fun getUserId(email: String, password: String, onResult: (Long?) -> Unit) {
+        viewModelScope.launch {
+            val id = repository.getUserId(email, password)
+            onResult(id)
+        }
+    }
+
     fun resetPassword(email: String, newPassword: String, onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             val success = repository.updatePassword(email, newPassword)

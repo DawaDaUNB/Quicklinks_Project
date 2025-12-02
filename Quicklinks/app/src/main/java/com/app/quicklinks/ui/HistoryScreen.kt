@@ -13,16 +13,13 @@ import androidx.compose.material.icons.filled.CopyAll
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SortByAlpha
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,43 +30,46 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.app.quicklinks.QuicklinksApp
 import com.app.quicklinks.R
+import com.app.quicklinks.viewmodel.LoginAuth
 import com.app.quicklinks.viewmodel.ScanViewModel
 import com.app.quicklinks.viewmodel.ScanViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HistoryScreen(navController: NavController) {
+fun HistoryScreen(navController: NavController, loginAuth: LoginAuth) {
     //val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     val app = LocalContext.current.applicationContext as QuicklinksApp
     val viewModel: ScanViewModel = viewModel(
         factory = ScanViewModelFactory(app.repository)
     )
+    val currentUser = loginAuth.userId?: -1L
     val history by viewModel.history.collectAsState()
   //  var searchText by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
-        viewModel.loadHistory()
+        viewModel.loadHistory(currentUser)
     }
 
     Scaffold(
         topBar = {
             TopAppBar(
+                navigationIcon = { IconButton(onClick = {
+                    navController.navigate("home") {
+                        popUpTo("history") { inclusive = true }
+                    }
+                }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_arrow_back),
+                        contentDescription = stringResource(R.string.back),
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }},
                 title = { Text(stringResource(R.string.history), fontSize = 32.sp) },
                 actions = {
-                    IconButton(onClick = {
-                        navController.navigate("home") {
-                            popUpTo("history") { inclusive = true }
-                        }
-                    }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_arrow_back),
-                            contentDescription = stringResource(R.string.back),
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
 
 
-                    IconButton(onClick = { viewModel.loadHistoryAlphabetical() }) {
+
+                    IconButton(onClick = { viewModel.loadHistoryAlphabetical(currentUser) }) {
                         Icon(
                             Icons.Filled.SortByAlpha,
                             contentDescription = "Search by Id",
@@ -77,7 +77,7 @@ fun HistoryScreen(navController: NavController) {
                         )
 
                     }
-                    IconButton(onClick = { viewModel.loadHistory() }) {
+                    IconButton(onClick = { viewModel.loadHistory(currentUser) }) {
                         Icon(
                             Icons.Filled.DateRange,
                             contentDescription = "Search by Date",
@@ -111,7 +111,7 @@ fun HistoryScreen(navController: NavController) {
                 //.padding(16.dp)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(MaterialTheme.colorScheme.primary,MaterialTheme.colorScheme.background), // Your gradient colors
+                        colors = listOf(MaterialTheme.colorScheme.secondary,MaterialTheme.colorScheme.background), // Your gradient colors
                         startY = 0f,
                         endY = Float.POSITIVE_INFINITY
                     )
@@ -143,7 +143,7 @@ fun HistoryScreen(navController: NavController) {
                                     verticalAlignment = Alignment.CenterVertically,
                                 ) {
                                     IconButton(onClick = {
-                                        viewModel.updateFavorite(scan, (!scan.favorite))
+                                        viewModel.updateFavorite(scan, (!scan.favorite), currentUser)
                                     }) {
                                         if (scan.favorite) {
                                             Icon(
@@ -172,7 +172,7 @@ fun HistoryScreen(navController: NavController) {
                                     IconButton(onClick = {
                                         clipboard.setText(AnnotatedString(scan.shortcode))
                                     }) {
-                                        Icon(Icons.Filled.CopyAll, contentDescription = "Copy scan")
+                                        Icon(Icons.Filled.CopyAll, contentDescription = stringResource(R.string.copy))
                                     }
 
                                     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -180,26 +180,26 @@ fun HistoryScreen(navController: NavController) {
                                     IconButton(onClick = { showDeleteDialog = true }) {
                                         Icon(
                                             Icons.Default.Delete,
-                                            contentDescription = "Delete scan"
+                                            contentDescription = stringResource(R.string.delete)
                                         )
                                     }
 
                                     if (showDeleteDialog) {
                                         AlertDialog(
                                             onDismissRequest = { showDeleteDialog = false },
-                                            title = { Text("Delete scan?") },
+                                            title = { Text(stringResource(R.string.delete)) },
                                             text = { Text("Are you sure you want to delete this scan? This action cannot be undone.") },
                                             confirmButton = {
                                                 TextButton(onClick = {
-                                                    viewModel.deleteScan(scan)
+                                                    viewModel.deleteScan(scan, currentUser)
                                                     showDeleteDialog = false
                                                 }) {
-                                                    Text("Delete")
+                                                    Text(stringResource(R.string.delete))
                                                 }
                                             },
                                             dismissButton = {
                                                 TextButton(onClick = { showDeleteDialog = false }) {
-                                                    Text("Cancel")
+                                                    Text(stringResource(R.string.cancel))
                                                 }
                                             }
                                         )
@@ -228,7 +228,8 @@ fun HistoryScreen(navController: NavController) {
                                             Button(onClick = {
                                                 viewModel.updateName(
                                                     scan,
-                                                    newName
+                                                    newName,
+                                                    currentUser
                                                 ); editName = !editName
                                             }) {
                                                 Icon(

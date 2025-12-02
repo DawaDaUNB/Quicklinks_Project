@@ -33,17 +33,19 @@
     <string name="copy">Copy to Clipboard </string>
     <string name="paste">Paste from Clipboard </string>
     <string name="logout">Log Out</string>
+    <string name="logout_confirm">Are you sure you want to log out</string>
     <string name="signup">Sign Up</string>
     <string name="shortened">Shortened URL: </string>
 
+    <string name="cancel">Cancel</string>
     <string name="enter">Enter URL</string>
     <string name="search">Type to Search </string>
     <string name="rename">Rename Scan</string>
     <string name="back">Back </string>
     <string name="delete">Delete</string>
     <string name="new_name">Enter new name</string>
-    <string name="camera_permission_request">Enter new name</string>
+    <string name="camera_permission_request">QR Scanner requires permission to use the device\'s camera</string>
 
-
-
+    <string name="favorite">Favorite</string>
+    <string name="unfavorite">Unfavorite</string>
 </resources>
