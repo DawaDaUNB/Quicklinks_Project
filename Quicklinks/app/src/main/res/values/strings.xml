@@ -1,3 +1,49 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">QuickLinks</string>
+
+    <string name="forgot_password">Forgot Password </string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_out">Sign in</string>
+    <string name="account">Create Account</string>
+    <string name="guest">Continue as Guest </string>
+
+    <string name="qr_scan">Scan QR Code</string>
+    <string name="shorten_url">Type in URL</string>
+    <string name="qr_generator">QR Generator</string>
+    <string name="history">History</string>
+
+    <string name="foreground_color">Foreground Color (RGB)</string>
+    <string name="background_color">Background Color (RGB)</string>
+    <string name="border_color">Border Color (RGB)</string>
+    <string name="border_size">Border Size: </string>
+    <string name="blue">Blue</string>
+    <string name="red">Red</string>
+    <string name="green">Green</string>
+
+    <string name="save">Save to Gallery </string>
+    <string name="save_photo">Save to Photo Gallery</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="new_password">New Password</string>
+    <string name="password_update_failure">New Password</string>
+    <string name="password_update_success">Password updated successfully!</string>
+
+    <string name="open">Open in Browser </string>
+    <string name="copy">Copy to Clipboard </string>
+    <string name="paste">Paste from Clipboard </string>
+    <string name="logout">Log Out</string>
+    <string name="signup">Sign Up</string>
+    <string name="shortened">Shortened URL: </string>
+
+    <string name="enter">Enter URL</string>
+    <string name="search">Type to Search </string>
+    <string name="rename">Rename Scan</string>
+    <string name="back">Back </string>
+    <string name="delete">Delete</string>
+    <string name="new_name">Enter new name</string>
+    <string name="camera_permission_request">Enter new name</string>
+
+
+
 </resources>

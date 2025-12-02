@@ -1,22 +1,57 @@
 package com.app.quicklinks.data
 
+import android.graphics.Bitmap
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class ScanRepository(private val dao: ScanDao) {
 
-    suspend fun saveScan(value: String) {
+    suspend fun saveScan(value: String, oURL: String, sURL: String, uId: Long) {
         dao.insertScan(
             Scan(
                 text = value,
-                timestamp = System.currentTimeMillis()
+                originalUrl = oURL,
+                shortcode = sURL,
+                qrCode = null,
+                favorite = false,
+                timestamp = System.currentTimeMillis(),
+                userId = uId
             )
         )
     }
     suspend fun deleteScan(scan: Scan) {
         dao.deleteScan(scan)
     }
-    fun getHistory(): Flow<List<Scan>> = flow {
-        emit(dao.getAllScans())
+    fun getHistory(userId: Long): Flow<List<Scan>> = flow {
+        emit(dao.getAllScans(userId))
     }
+
+    fun getHistoryAlphabetical(userId: Long): Flow<List<Scan>> = flow {
+        emit(dao.getAllScansAlphabetical(userId))
+    }
+
+    fun getHistoryReverse(userId: Long): Flow<List<Scan>> = flow {
+        emit(dao.getAllScansReverse(userId))
+    }
+
+    fun getHistoryAlphabeticalReserve(userId: Long): Flow<List<Scan>> = flow {
+        emit(dao.getAllScansAlphabeticalReverse(userId))
+    }
+
+    fun scanSearch(substring: String,userId: Long): Flow<List<Scan>> = flow {
+        dao.searchScan(substring, userId)
+    }
+
+    suspend fun updateScanName(scanId: Long, newName: String) {
+        dao.updateScanName(scanId,newName)
+    }
+
+    suspend fun updateScanFavorite(scanId: Long, isFavorite: Boolean) {
+        dao.updateScanFavorite(scanId,isFavorite)
+    }
+
+    suspend fun updateScanQR(scanId: Long, newQR: ByteArray?) {
+        dao.updateScanQR(scanId,newQR)
+    }
+
 }

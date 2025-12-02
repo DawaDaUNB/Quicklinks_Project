@@ -10,6 +10,7 @@ class ScanViewModelFactory(
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ScanViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
             return ScanViewModel(repo) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

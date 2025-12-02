@@ -1,0 +1,28 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color blue_accent
+color dark_text
+color field_bg
+color field_border
+color purple_200
+color purple_500
+color purple_700
+color teal_200
+color teal_700
+color white
+drawable app_logo
+drawable edittext_bg
+drawable ic_arrow_back
+drawable ic_email
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+drawable ic_lock
+drawable ic_visibility
+drawable ic_visibility_off
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+style Theme.MyApplication
+xml backup_rules
+xml data_extraction_rules
