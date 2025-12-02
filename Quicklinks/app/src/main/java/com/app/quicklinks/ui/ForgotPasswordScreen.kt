@@ -35,7 +35,7 @@ fun ForgotPasswordScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Reset Password", fontSize = 20.sp) },
+                title = { Text("Reset Password", fontSize = 32.sp, color = MaterialTheme.colorScheme.onPrimary) },
                 navigationIcon = {
                     IconButton(onClick = {
                         navController.navigate("login") {
@@ -45,13 +45,13 @@ fun ForgotPasswordScreen(
                         Icon(
                             painter = painterResource(id = R.drawable.ic_arrow_back),
                             contentDescription = stringResource(R.string.back),
-                            tint = MaterialTheme.colorScheme.onSecondary
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.secondary,
-                    titleContentColor = MaterialTheme.colorScheme.onSecondary
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         }

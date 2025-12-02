@@ -1,12 +1,15 @@
 package com.app.quicklinks.utils
 
+import android.content.ClipData
 import android.graphics.Color
 
 import android.content.ContentValues
 import android.content.Context
 import android.graphics.*
+import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import androidx.core.content.FileProvider
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.qrcode.QRCodeWriter
@@ -14,6 +17,8 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import androidx.core.graphics.scale
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.set
+import java.io.File
+import java.io.FileOutputStream
 
 //qr code properties
 fun generateQrBitmap(
@@ -111,3 +116,33 @@ fun saveQrToGallery(context: Context, bitmap: Bitmap) {
         }
     }
 }
+
+//
+//fun saveQrToClipboard(context: Context, bitmap: Bitmap) {
+//    val resolver = context.contentResolver
+//    val filename = "QR_${System.currentTimeMillis()}.png"
+//
+//    val contentValues = ContentValues().apply {
+//        put(MediaStore.Images.Media.DISPLAY_NAME, filename)
+//        put(MediaStore.Images.Media.MIME_TYPE, "image/png")
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/Quicklinks")
+//            put(MediaStore.Images.Media.IS_PENDING, 1)
+//        }
+//    }
+//
+//    val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+//
+//    uri?.let {
+//        resolver.openOutputStream(it)?.use { out ->
+//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+//        }
+//
+//        val clipData = ClipData.newUri(context.contentResolver, "Image", uri)
+//
+//        val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+//        clipboardManager.setPrimaryClip(clipData)
+//    }
+//
+//}
+

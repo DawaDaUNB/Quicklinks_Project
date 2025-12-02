@@ -2,7 +2,6 @@ package com.app.quicklinks.ui
 
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.provider.Settings.Global.getString
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -21,16 +20,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.app.quicklinks.R
 import com.app.quicklinks.utils.generateQrBitmap
 import com.app.quicklinks.utils.saveQrToGallery
+import com.app.quicklinks.viewmodel.LoginAuth
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QrGeneratorScreen(navController: NavController) {
+fun QrGeneratorScreen(navController: NavController, loginAuth: LoginAuth) {
     val context = LocalContext.current
 
     var text by rememberSaveable { mutableStateOf("") }

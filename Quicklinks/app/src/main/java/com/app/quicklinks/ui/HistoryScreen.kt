@@ -13,16 +13,13 @@ import androidx.compose.material.icons.filled.CopyAll
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SortByAlpha
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,22 +30,24 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.app.quicklinks.QuicklinksApp
 import com.app.quicklinks.R
+import com.app.quicklinks.viewmodel.LoginAuth
 import com.app.quicklinks.viewmodel.ScanViewModel
 import com.app.quicklinks.viewmodel.ScanViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HistoryScreen(navController: NavController) {
+fun HistoryScreen(navController: NavController, loginAuth: LoginAuth) {
     //val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     val app = LocalContext.current.applicationContext as QuicklinksApp
     val viewModel: ScanViewModel = viewModel(
         factory = ScanViewModelFactory(app.repository)
     )
+    val currentUser = loginAuth.userId?: -1L
     val history by viewModel.history.collectAsState()
   //  var searchText by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
-        viewModel.loadHistory()
+        viewModel.loadHistory(currentUser)
     }
 
     Scaffold(
@@ -69,7 +68,7 @@ fun HistoryScreen(navController: NavController) {
                     }
 
 
-                    IconButton(onClick = { viewModel.loadHistoryAlphabetical() }) {
+                    IconButton(onClick = { viewModel.loadHistoryAlphabetical(currentUser) }) {
                         Icon(
                             Icons.Filled.SortByAlpha,
                             contentDescription = "Search by Id",
@@ -77,7 +76,7 @@ fun HistoryScreen(navController: NavController) {
                         )
 
                     }
-                    IconButton(onClick = { viewModel.loadHistory() }) {
+                    IconButton(onClick = { viewModel.loadHistory(currentUser) }) {
                         Icon(
                             Icons.Filled.DateRange,
                             contentDescription = "Search by Date",
@@ -191,7 +190,7 @@ fun HistoryScreen(navController: NavController) {
                                             text = { Text("Are you sure you want to delete this scan? This action cannot be undone.") },
                                             confirmButton = {
                                                 TextButton(onClick = {
-                                                    viewModel.deleteScan(scan)
+                                                    viewModel.deleteScan(scan, currentUser)
                                                     showDeleteDialog = false
                                                 }) {
                                                     Text("Delete")

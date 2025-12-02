@@ -16,6 +16,10 @@ class UserRepository(private val dao: UserDao) {
         return dao.login(emailOrUsername, password) != null
     }
 
+    suspend fun getUserId(email: String, password: String): Long? {
+        return dao.getID(email, password)
+    }
+
     suspend fun doesUserExist(userId: Long): Boolean {
         return dao.getUserById(userId) != null
     }

@@ -1,16 +1,19 @@
 package com.app.quicklinks.viewmodel
+import androidx.lifecycle.ViewModel
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
-import kotlinx.coroutines.flow.MutableStateFlow
-
-class LoginAuth {
+class LoginAuth : ViewModel()  {
     // The current logged-in user
-    val userId = MutableStateFlow<Long?>(null)
+    var userId by mutableStateOf<Long?>(-1L)
+        private set
 
-    fun setUser(id: Long) {
-        userId.value = id
+    fun login(id: Long) {
+        userId = id
     }
 
     fun logout() {
-        userId.value = -1
+        userId = -1L
     }
 }

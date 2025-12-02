@@ -26,6 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.app.quicklinks.QuicklinksApp
 import com.app.quicklinks.R
+import com.app.quicklinks.viewmodel.LoginAuth
 import com.app.quicklinks.viewmodel.ScanViewModel
 import com.app.quicklinks.viewmodel.ScanViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -34,9 +35,10 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.net.URLEncoder
+import androidx.compose.runtime.collectAsState
 
 @Composable
-fun ShortenerScreen(navController: NavController) {
+fun ShortenerScreen(navController: NavController, loginAuth: LoginAuth) {
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     val clipboardManager = LocalClipboardManager.current
     var urlText by rememberSaveable { mutableStateOf("") }
@@ -51,11 +53,12 @@ fun ShortenerScreen(navController: NavController) {
         factory = ScanViewModelFactory(app.repository)
     )
 
+    val currentUser = loginAuth.userId?: -1L
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .heightIn(min = screenHeight)
             .background(MaterialTheme.colorScheme.primary)
     ) {
         IconButton(
@@ -74,6 +77,7 @@ fun ShortenerScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .heightIn(min = screenHeight)
                 .padding(top = 40.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -176,41 +180,46 @@ fun ShortenerScreen(navController: NavController) {
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
-                                Button(onClick = {
-                                    clipboardManager.setText(AnnotatedString(short))
-                                }, colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.primary,
-                                    contentColor = MaterialTheme.colorScheme.onPrimary
-                                )
+                                Button(
+                                    onClick = {
+                                        clipboardManager.setText(AnnotatedString(short))
+                                    }, colors = ButtonDefaults.buttonColors(
+                                        containerColor = MaterialTheme.colorScheme.primary,
+                                        contentColor = MaterialTheme.colorScheme.onPrimary
+                                    )
                                 ) {
                                     Text("Copy")
                                 }
 
-                                Button(onClick = {
-                                    shortenedUrl?.let {
-                                        viewModel.saveScan(
-                                            saveUrl,
-                                            saveUrl,
-                                            short
-                                        )
-                                    }
-                                }, colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.primary,
-                                    contentColor = MaterialTheme.colorScheme.onPrimary
-                                )) {
-                                    Text("Save")
-                                }
-                                Button(onClick = {
-                                    navController.context.startActivity(
-                                        android.content.Intent(
-                                            android.content.Intent.ACTION_VIEW,
-                                            short.toUri()
-                                        )
+                                Button(
+                                    onClick = {
+                                        shortenedUrl?.let {
+                                            viewModel.saveScan(
+                                                saveUrl,
+                                                saveUrl,
+                                                short,
+                                                currentUser
+                                            )
+                                        }
+                                    }, colors = ButtonDefaults.buttonColors(
+                                        containerColor = MaterialTheme.colorScheme.primary,
+                                        contentColor = MaterialTheme.colorScheme.onPrimary
                                     )
-                                }, colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.primary,
-                                    contentColor = MaterialTheme.colorScheme.onPrimary
-                                )
+                                ) {
+                                    Text(stringResource(R.string.save))
+                                }
+                                Button(
+                                    onClick = {
+                                        navController.context.startActivity(
+                                            android.content.Intent(
+                                                android.content.Intent.ACTION_VIEW,
+                                                short.toUri()
+                                            )
+                                        )
+                                    }, colors = ButtonDefaults.buttonColors(
+                                        containerColor = MaterialTheme.colorScheme.primary,
+                                        contentColor = MaterialTheme.colorScheme.onPrimary
+                                    )
                                 ) {
 
                                     Text("Open")
